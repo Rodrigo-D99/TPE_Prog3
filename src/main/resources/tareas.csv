@@ -1,0 +1,11 @@
+id_tarea;nombre_tarea;tiempo_ejecucion;es_critica?;nivel_prioridad
+1;Análisis de datos;120;True;1
+2;Actualización de software;60;False;2
+3;Backup del sistema;180;True;1
+4;Mantenimiento de hardware;240;False;3
+5;Monitoreo de red;120;True;1
+6;Optimización de base de datos;300;False;2
+7;Configuración de servidores;360;True;1
+8;Implementación de seguridad;180;True;1
+9;Pruebas de rendimiento;240;False;2
+10;Documentación del sistema;120;False;3
