@@ -2,11 +2,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Servicio {
-    private ArrayList<Tarea> tareas;
-    private ArrayList<Procesador>procesadors;
+    private LinkedList<Tarea> tareas;
+    private LinkedList<Procesador>procesadors;
+
+    private LinkedList<Tarea> critica, noCritica;
 
 
     //Completar con las estructuras y métodos privados que se
@@ -15,8 +18,8 @@ public class Servicio {
      * Expresar la complejidad temporal del constructor.
      */
     public Servicio(String pathProcesadores, String pathTareas) {
-        tareas=new ArrayList<>();
-        procesadors=new ArrayList<>();
+        tareas=new LinkedList<>();
+        procesadors=new LinkedList<>();
         leerProcesadores(pathProcesadores,this.procesadors);
         leerTareas(pathTareas,tareas);
     }
@@ -30,7 +33,9 @@ public class Servicio {
      * Expresar la complejidad temporal del servicio 2.
      */
     public List<Tarea> servicio2(boolean esCritica) {
-        return List.of();
+        if (esCritica)
+            return critica;
+        return noCritica;
     }
     /*
      * Expresar la complejidad temporal del servicio 3.
@@ -73,6 +78,11 @@ public class Servicio {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addTarea(Tarea t){
+        if (t!=null)
+            this.tareas.add(t);
     }
 
 }
