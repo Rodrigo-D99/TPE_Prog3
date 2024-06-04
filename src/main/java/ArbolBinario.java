@@ -55,12 +55,27 @@ class ArbolBinario {
         preOrden(nodo.der);
     }
 
+    public void addNodo(Nodo n){
+        int compare = this.compareTo(n);
+        if (compare != 0){
+            if (compare > 0){
+                if (this.raiz.der == null)
+                    this.raiz.der = n;
+                else
+                    this.raiz.der.addNodo(n);
+            }else {
+                if (this.raiz.izq == null)
+                    this.raiz.izq = n;
+                else
+                    this.raiz.izq.addNodo(n);
+            }
+        }
+    }
+
+
+
     public static void main(String[] args) {
-        
         ArbolBinario tree = new ArbolBinario();
-
-
-
         tree.raiz = new Nodo(10);
         tree.raiz.der = new Nodo(30);
         tree.raiz.der.der = new Nodo(36);
