@@ -3,7 +3,7 @@ public class Tarea {
     private String nombre;
     private boolean is_critica;
 
-    public Tarea(int tiempo_ejec, String nombre, int nivel_prioridad, boolean is_critica, int id) {
+    public Tarea(int id,String nombre,int tiempo_ejec,boolean is_critica, int nivel_prioridad ) {
         setTiempo_ejec(tiempo_ejec);
         setNivel_prioridad(nivel_prioridad);
         this.nombre = nombre;
@@ -43,7 +43,7 @@ public class Tarea {
         return nivel_prioridad;
     }
 
-    public boolean isIs_critica() {
+    public boolean is_critica() {
         return is_critica;
     }
 

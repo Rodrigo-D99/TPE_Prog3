@@ -25,7 +25,9 @@ public class LeerArchivo {
 
             if (Files.exists(Paths.get(procesadoresArchivo)) && Files.exists(Paths.get(tareasArchivo))) {
                 archivosValidos = true;
-               Servicio s=new Servicio(procesadoresArchivo,tareasArchivo);
+                Servicio s=new Servicio(procesadoresArchivo,tareasArchivo);
+                String ss=" ";
+
             } else {
                 System.out.println("Uno o ambos archivos no existen en la carpeta 'resources'. Intente de nuevo.");
             }
