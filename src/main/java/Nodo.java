@@ -15,23 +15,29 @@ public class Nodo {
     }
 
     public void addNodo(Nodo n){
-        if (prioridad==n.prioridad)
-            addAllTareas(n.info);
-        else if (prioridad>n.prioridad)
-            if (izq==null)
-                izq=n;
-            else
-                izq.addNodo(n);
-        else
-            if (der==null)
-                der=n;
-            else
-                der.addNodo(n);
+        if (n != null){
+            if (prioridad==n.prioridad)
+                addAllTareas(n.info);
+            else if (prioridad>n.prioridad){//colocar en izquierda
+                if (izq==null)
+                    izq=n;
+                else
+                    izq.addNodo(n);
+            }
+            else{
+                if (der==null)
+                    der=n;
+                else
+                    der.addNodo(n);
+            }
+        }
     }
-//    public void addTarea(Tarea t){
-//        if (t!=null && t.getNivel_prioridad()==prioridad)
-//            info.add(t);
-//    }
+
+    public void resetNodos(){
+        this.izq=null;
+        this.der=null;
+    }
+
     public void addAllTareas(LinkedList<Tarea> ts){
         this.info.addAll(ts);
     }

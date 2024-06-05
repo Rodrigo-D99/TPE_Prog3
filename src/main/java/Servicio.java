@@ -5,11 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Servicio {
-    private HashTableManager tareaXID;
+    private HashTableManager tareaXID; //indice para servicio 1
     private LinkedList<Tarea> tareas;
     private LinkedList<Procesador>procesadors;
-    private LinkedList<Tarea> critica, noCritica;
-    private ArbolBinario arbolBinario;
+    private LinkedList<Tarea> critica, noCritica; //indice para servicio 2
+    private ArbolBinario arbolBinario; //indice para servicio 3
 
     //Completar con las estructuras y métodos privados que se
    /* requieran.
@@ -46,7 +46,11 @@ public class Servicio {
      * Expresar la complejidad temporal del servicio 3.
      */
     public List<Tarea> servicio3(int prioridadInferior, int prioridadSuperior) {
-        return List.of();
+        prioridadInferior = Math.max(prioridadInferior, 0);
+        prioridadSuperior = Math.min(prioridadSuperior, 100);
+        if (prioridadSuperior>=prioridadInferior)
+            return this.arbolBinario.getNodosPrioridad(prioridadInferior, prioridadSuperior);
+        return null;
     }
 
     private static void leerProcesadores(String archivo, List<Procesador> lista) {
@@ -59,7 +63,7 @@ public class Servicio {
                 String codigo = datos[1];
                 boolean refrigerado = Boolean.parseBoolean(datos[2]);
                 int anio = Integer.parseInt(datos[3]);
-                Procesador procesador = new Procesador(id,anio,refrigerado,codigo  );
+                Procesador procesador = new Procesador(id,anio,refrigerado,codigo);
                 lista.add(procesador);
             }
         } catch (IOException e) {
@@ -79,7 +83,6 @@ public class Servicio {
                 int prioridad = Integer.parseInt(datos[4]);
                 Tarea tarea = new Tarea(id, nombre, tiempo, critica, prioridad);
                 this.addTarea(tarea);
-
             }
         } catch (IOException e) {
             e.printStackTrace();

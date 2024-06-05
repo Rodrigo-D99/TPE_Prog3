@@ -1,9 +1,9 @@
 import java.util.*;
 
 class ArbolBinario {
-    Nodo raiz;
+    private Nodo raiz;
 
-    public void getNodos(Nodo raiz, List<Nodo> nodos) {
+    private void getNodos(Nodo raiz, List<Nodo> nodos) {
         if (raiz == null)
             return;
         getNodos(raiz.getIzq(), nodos);
@@ -23,9 +23,11 @@ class ArbolBinario {
 
 
     private Nodo balancearArbol(Nodo raiz) {
-        List<Nodo> nodos = new ArrayList<>();
+        List<Nodo> nodos = new ArrayList<>(); //Todos los nodos en una lista
+                                                //todavia se apuntan entre si
         getNodos(raiz, nodos);
         int n = nodos.size();
+        nodos.forEach(Nodo::resetNodos);
         return crearArbol(nodos, 0, n - 1);
     }
 
@@ -38,14 +40,60 @@ class ArbolBinario {
     }
 
     public void addNodo(Nodo n){
-        if (raiz==null)
-            this.raiz=n;
-        else{
-            this.raiz.addNodo(n);
+        if (n != null){
+            if (raiz==null)
+                this.raiz=n;
+            else{
+                this.raiz.addNodo(n);
+            }
+            verificarYBalancear();
         }
     }
 
+    public List<Tarea> getNodosPrioridad(int prioridadInferior, int prioridadSuperior) {
+        LinkedList<Tarea> result = new LinkedList<>();
+        getNodosPrioridad(this.raiz, prioridadInferior, prioridadSuperior, result);
+        return result;
+    }
 
+    private void getNodosPrioridad(Nodo nodo, int prioridadInferior, int prioridadSuperior, List<Tarea> result) {
+        if (nodo == null)
+            return;
+        int prioridad = nodo.getPrioridad();
+        if (prioridad >= prioridadInferior && prioridad <= prioridadSuperior) {
+            result.addAll(nodo.getInfo());
+        }
+        getNodosPrioridad(nodo.getIzq(), prioridadInferior, prioridadSuperior, result);
+        getNodosPrioridad(nodo.getDer(), prioridadInferior, prioridadSuperior, result);
+    }
+
+    private int altura(Nodo nodo) {
+        if (nodo == null) {
+            return 0;
+        }
+        return 1 + Math.max(altura(nodo.getIzq()), altura(nodo.getDer()));
+    }
+
+    // Método para verificar si el árbol está balanceado
+    private boolean estaBalanceado(Nodo nodo) {
+        if (nodo == null) {
+            return true;
+        }
+        int alturaIzq = altura(nodo.getIzq());
+        int alturaDer = altura(nodo.getDer());
+        if (Math.abs(alturaIzq - alturaDer) > 1) {
+            return false;
+        }
+        return estaBalanceado(nodo.getIzq()) && estaBalanceado(nodo.getDer());
+    }
+
+    private void verificarYBalancear() {
+        if (!estaBalanceado(this.raiz)) {
+            this.raiz = balancearArbol(this.raiz);
+        }
+    }
+
+}
 
 //    public static void main(String[] args) {
 //        ArbolBinario tree = new ArbolBinario();
@@ -62,4 +110,3 @@ class ArbolBinario {
 //        System.out.println("PreorgetDer() traversal of balanced BST is :");
 //        tree.preOrden(tree.raiz);
 //    }
-}
