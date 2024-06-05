@@ -1,13 +1,11 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Servicio {
-    private HashMap<String,LinkedList<Tarea>> tareaXID;
-    private final int M=7;
+    private HashTableManager tareaXID;
     private LinkedList<Tarea> tareas;
     private LinkedList<Procesador>procesadors;
     private LinkedList<Tarea> critica, noCritica;
@@ -21,7 +19,7 @@ public class Servicio {
     public Servicio(String pathProcesadores, String pathTareas) {
         tareas=new LinkedList<>();
         procesadors=new LinkedList<>();
-        tareaXID=new HashMap<>();
+        tareaXID=new HashTableManager();
         arbolBinario=new ArbolBinario();
         critica=new LinkedList<>();
         noCritica=new LinkedList<>();
@@ -33,14 +31,7 @@ public class Servicio {
      * LOG(N)
      */
     public Tarea servicio1(String ID) {
-        String indS = String.valueOf(Integer.parseInt(ID)%M);
-        if (tareaXID.containsKey(indS)){
-            for (Tarea t:tareaXID.get(indS)){
-                if (String.valueOf(t.getId()).equals(ID))
-                    return t;
-            }
-        }
-        return null;
+        return this.tareaXID.getTarea(ID);
     }
     /*
      * Expresar la complejidad temporal del servicio 2.
@@ -99,21 +90,10 @@ public class Servicio {
         if (t!=null){
             tareas.add(t);
             this.arbolBinario.addNodo(new Nodo(t));
-            addtareaXID(t);
+            this.tareaXID.addTarea(t);
             if (t.is_critica())
                 this.critica.add(t);
             else
                 this.noCritica.add(t);
     }}
-
-    private void addtareaXID(Tarea t){
-        String indS = String.valueOf(t.getId() % M);
-        if (this.tareaXID.containsKey(indS)){
-            this.tareaXID.get(indS).add(t);
-        }else {
-            LinkedList<Tarea> tmp = new LinkedList<>();
-            tmp.add(t);
-            this.tareaXID.put(indS, tmp);
-        }
-    }
 }
