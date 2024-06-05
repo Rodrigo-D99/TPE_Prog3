@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,10 +33,12 @@ public class Servicio {
      * LOG(N)
      */
     public Tarea servicio1(String ID) {
-        int i=Integer.parseInt(ID)%M;
-        for (Tarea t:tareaXID.get(i)){
-            if (String.valueOf(t.getId()).equals(ID))
-                return t;
+        String indS = String.valueOf(Integer.parseInt(ID)%M);
+        if (tareaXID.containsKey(indS)){
+            for (Tarea t:tareaXID.get(indS)){
+                if (String.valueOf(t.getId()).equals(ID))
+                    return t;
+            }
         }
         return null;
     }
@@ -94,14 +95,25 @@ public class Servicio {
         }
     }
 
-    public void addTarea(Tarea t){
-        LinkedList<Tarea>ta=new LinkedList<>();
+    private void addTarea(Tarea t){
         if (t!=null){
-            ta.add(t);
-            servicio2(t.is_critica());
             tareas.add(t);
-            tareaXID.put(String.valueOf(t.getId()),ta);
             this.arbolBinario.addNodo(new Nodo(t));
+            addtareaXID(t);
+            if (t.is_critica())
+                this.critica.add(t);
+            else
+                this.noCritica.add(t);
     }}
 
+    private void addtareaXID(Tarea t){
+        String indS = String.valueOf(t.getId() % M);
+        if (this.tareaXID.containsKey(indS)){
+            this.tareaXID.get(indS).add(t);
+        }else {
+            LinkedList<Tarea> tmp = new LinkedList<>();
+            tmp.add(t);
+            this.tareaXID.put(indS, tmp);
+        }
+    }
 }
