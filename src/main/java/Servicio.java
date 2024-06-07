@@ -5,26 +5,32 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Servicio {
+    private final int MAX_TIEMPO = 100;
     private HashTableManager tareaXID; //indice para servicio 1
     private LinkedList<Tarea> tareas;
-    private LinkedList<Procesador>procesadors;
+    private LinkedList<Procesador>procesadores;
     private LinkedList<Tarea> critica, noCritica; //indice para servicio 2
     private ArbolBinario arbolBinario; //indice para servicio 3
+    private SolBacktracking solBacktracking;
+
+    private SolGreedy solGreedy;
 
     //Completar con las estructuras y métodos privados que se
    /* requieran.
 
      * Expresar la complejidad temporal del constructor.
      */
-    public Servicio(String pathProcesadores, String pathTareas) {
+    public Servicio(String path, String pathTareas) {
         tareas=new LinkedList<>();
-        procesadors=new LinkedList<>();
+        procesadores=new LinkedList<>();
         tareaXID=new HashTableManager();
         arbolBinario=new ArbolBinario();
         critica=new LinkedList<>();
         noCritica=new LinkedList<>();
-        leerProcesadores(pathProcesadores,this.procesadors);
+        leer(path,this.procesadores);
         leerTareas(pathTareas);
+        solBacktracking = new SolBacktracking(tareas,procesadores);
+        this.solGreedy = new SolGreedy(procesadores, tareas);
     }
     /*
      * Expresar la complejidad temporal del servicio 1.
@@ -53,7 +59,19 @@ public class Servicio {
         return null;
     }
 
-    private static void leerProcesadores(String archivo, List<Procesador> lista) {
+    public void asignarTareas(int tiempoDEMax){
+        System.out.println("Servicio:\nLlamar Greedy:");
+        solGreedy.greedy(tiempoDEMax);
+        if (solGreedy.existeSol()){
+            System.out.println("Servicio:\nExiste una solucion\nLlamar Backtracking: TRUE");
+            solBacktracking.backtracking(tiempoDEMax);
+        }
+        else {
+            System.out.println("Servicio:\nNo existe una solucion\nLlamar Backtracking: FALSE");
+        }
+    }
+
+    private static void leer(String archivo, List<Procesador> lista) {
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
             br.readLine(); // Leer y descartar la primera línea (encabezado)

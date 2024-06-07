@@ -1,4 +1,4 @@
-public class Tarea {
+public class Tarea implements Comparable<Tarea> {
     private int id,tiempo_ejec,nivel_prioridad;
     private String nombre;
     private boolean is_critica;
@@ -56,5 +56,10 @@ public class Tarea {
                 ", nombre='" + nombre + '\'' +
                 ", is_critica=" + is_critica +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Tarea tarea) {
+        return Integer.compare(this.getTiempo_ejec(),tarea.getTiempo_ejec());
     }
 }

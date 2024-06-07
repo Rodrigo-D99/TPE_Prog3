@@ -1,0 +1,51 @@
+id_tarea;nombre_tarea;tiempo_ejecucion;es_critica?;nivel_prioridad
+103;Análisis de datos;17;True;93
+107;Actualización de software;25;False;15
+111;Backup del sistema;6;True;72
+115;Mantenimiento de hardware;14;False;61
+119;Monitoreo de red;9;True;21
+123;Optimización de base de datos;32;False;83
+127;Configuración de servidores;40;True;87
+131;Implementación de seguridad;20;True;75
+135;Pruebas de rendimiento;19;False;75
+139;Documentación del sistema;8;False;88
+143;Análisis de datos;7;True;70
+147;Actualización de software;11;False;22
+151;Backup del sistema;9;True;92
+155;Mantenimiento de hardware;26;False;52
+159;Monitoreo de red;14;True;87
+163;Optimización de base de datos;23;False;30
+167;Configuración de servidores;30;True;42
+171;Implementación de seguridad;14;True;39
+175;Pruebas de rendimiento;4;False;7
+179;Documentación del sistema;23;False;30
+183;Análisis de datos;12;True;28
+187;Actualización de software;7;False;89
+191;Backup del sistema;16;True;64
+195;Mantenimiento de hardware;17;False;67
+199;Monitoreo de red;12;True;67
+203;Optimización de base de datos;40;False;97
+207;Configuración de servidores;40;True;43
+211;Implementación de seguridad;40;True;76
+215;Pruebas de rendimiento;1;False;1
+219;Documentación del sistema;40;False;88
+223;Análisis de datos;40;True;82
+227;Actualización de software;6;False;12
+231;Backup del sistema;40;True;76
+235;Mantenimiento de hardware;40;False;58
+239;Monitoreo de red;40;True;34
+243;Optimización de base de datos;40;False;37
+247;Configuración de servidores;40;True;95
+251;Implementación de seguridad;40;True;20
+255;Pruebas de rendimiento;40;False;18
+259;Documentación del sistema;40;False;79
+263;Análisis de datos;40;True;26
+267;Actualización de software;6;False;65
+271;Backup del sistema;40;True;26
+275;Mantenimiento de hardware;40;False;34
+279;Monitoreo de red;40;True;45
+283;Optimización de base de datos;40;False;13
+287;Configuración de servidores;40;True;11
+291;Implementación de seguridad;40;True;10
+295;Pruebas de rendimiento;40;False;96
+299;Documentación del sistema;40;False;80

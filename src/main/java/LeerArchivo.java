@@ -11,6 +11,8 @@ public class LeerArchivo {
         Scanner scanner = new Scanner(System.in);
         String procesadoresArchivo;
         String tareasArchivo;
+        String asignarTareas;
+        int tiempoDEMax;
         boolean archivosValidos = false;
 
         while (!archivosValidos) {
@@ -33,6 +35,16 @@ public class LeerArchivo {
                 List<Tarea> pruebaServ2F = s.servicio2(false);
 
                 List<Tarea> pruebaServ3 = s.servicio3(2,15);
+
+                System.out.println("Desea asignar las tareas a los procesadores? Y/N");
+                //asignarTareas = scanner.nextLine();
+                asignarTareas = "y";
+
+                if(asignarTareas.equalsIgnoreCase("Y")){
+                    System.out.println("Ingrese el tiempo de ejecucion max para los procesadores no refrigerados:");
+                    //tiempoDEMax = Integer.parseInt(scanner.nextLine());
+                    s.asignarTareas(100);
+                }
 
                 String ss=" ";
 
