@@ -1,20 +1,17 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class SolGreedy {
     private List<Tarea> tareas;
     private List<Procesador> procesadores;
     private int tiempoMaximo;
-    private int casosConsiderados;
+    private int estadosGenerados;
     private int cantTareasAsignadas;
     private boolean existeSol;
 
     public SolGreedy(List<Procesador> procesadores, List<Tarea> tareas){
         this.tiempoMaximo = 0;
         this.cantTareasAsignadas = 0;
-        this.casosConsiderados = 0;
+        this.estadosGenerados = 0;
         this.procesadores = new ArrayList<>(procesadores);
         this.tareas = new ArrayList<>(tareas);
         this.existeSol = false;
@@ -25,17 +22,18 @@ public class SolGreedy {
         solucion = greedy(new LinkedList<>(procesadores),new LinkedList<>(tareas),tiempoX);
         System.out.println("\nGreedy:");
         if(this.tiempoMaximo != 0 && this.cantTareasAsignadas==tareas.size()){
-            mostrarSolucion(solucion);
+            printSolucion(solucion);
             this.existeSol = true;
         }else{
-            System.out.println("Casos considerados: " + casosConsiderados);
+            System.out.println("Estados Generados: " + estadosGenerados);
             System.out.println("Tareas asignadas: " + cantTareasAsignadas);
             System.out.println("No hay solucion posible\n");
         }
     }
 
     private List<Procesador> greedy(List<Procesador> procesadores, List<Tarea> tareas,int tiempoX){
-        ordenarTareas(tareas);//Ordenar tareas por tiempo de ejecucion
+        //ordenarTareas(tareas);//Ordenar tareas por tiempo de ejecucion
+        Collections.sort(tareas);
         int tiempoMaximoGlobal = 0;
         int menorTiempoMaximoProcesador;
         while(!tareas.isEmpty()){ // recorrer hasta que no queden tareas por asignar
@@ -47,15 +45,18 @@ public class SolGreedy {
                 if(isValido(p,t,tiempoX)){
                     int tiempoMaximo = p.getTiempoEjecucionMaximo();
                     if(tiempoMaximo < menorTiempoMaximoProcesador){
-                        this.casosConsiderados++;
+                        this.estadosGenerados++;
                         menorTiempoMaximoProcesador = tiempoMaximo;
                         procesadorConMenosCarga = p;
+                        if (cantTareasAsignadas==0)//Solo sirve para la primer tarea
+                            break; //de otra forma se iteran todos los procesadores para la primer tarea
                     }
                 }
             }
 
             if (procesadorConMenosCarga != null) {
                 procesadorConMenosCarga.addTarea(t);
+                Collections.sort(procesadores);
                 cantTareasAsignadas++;
                 int tiempoEjecucionActual = procesadorConMenosCarga.getTiempoEjecucionMaximo();
                 if (tiempoEjecucionActual > tiempoMaximoGlobal) {
@@ -90,14 +91,13 @@ public class SolGreedy {
         return !(p.cantTareasCriticas() == 2 && t.is_critica()) && (p.isRefrigerado() || p.getTiempoEjecucionMaximo() + t.getTiempo_ejec() <= tiempoX);
     }
 
-    private void mostrarSolucion(List<Procesador> lista){
-
-        for(int i = 0; i<lista.size();i++){
-
-            System.out.println(lista.get(i).getId()+"{"+lista.get(i).getTareas()+"}");
-        }
+    private void printSolucion(List<Procesador> lista){
+        System.out.println("Solucion obtenida: ");
+        lista.forEach(p -> {
+            System.out.println("Procesador " + p.getId() + " Tiempo="+ p.getTiempoEjecucionMaximo() +" - Tareas: Cantidad="+ p.getTareas().size() +" Detalle=" + p.getTareas());
+        });
         System.out.println("Tiempo maximo de Ejecucion: "+this.tiempoMaximo);
-        System.out.println("Candidatos Considerados: "+this.casosConsiderados);
+        System.out.println("Estados Generados: " + estadosGenerados);
     }
 
     public boolean existeSol() {

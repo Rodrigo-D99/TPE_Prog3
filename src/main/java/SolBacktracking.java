@@ -6,7 +6,6 @@ public class SolBacktracking {
 
     private List<Tarea> tareas;
     private List<Procesador> procesadores;
-
     private List<Procesador> mejorSolucion;
     private int mejorTiempoMaximo;
     private int estadosGenerados;

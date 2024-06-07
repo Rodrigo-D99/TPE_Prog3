@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Procesador {
+public class Procesador implements Comparable<Procesador>{
     private int id,anio_funcionamiento;
     private String codigo;
     private boolean is_refrigerado;
@@ -70,5 +70,10 @@ public class Procesador {
 
     public Procesador getCopy(){
         return new Procesador(this.id, this.anio_funcionamiento, this.is_refrigerado, this.codigo);
+    }
+
+    @Override
+    public int compareTo(Procesador o) {
+        return Integer.compare(this.getTiempoEjecucionMaximo(), o.getTiempoEjecucionMaximo());
     }
 }

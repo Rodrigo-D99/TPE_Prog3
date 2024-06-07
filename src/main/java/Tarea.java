@@ -60,6 +60,6 @@ public class Tarea implements Comparable<Tarea> {
 
     @Override
     public int compareTo(Tarea tarea) {
-        return Integer.compare(this.getTiempo_ejec(),tarea.getTiempo_ejec());
+        return Integer.compare(tarea.getTiempo_ejec(), this.getTiempo_ejec());
     }
 }
