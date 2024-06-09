@@ -11,7 +11,7 @@ public class Servicio {
     private LinkedList<Procesador>procesadores;
     private LinkedList<Tarea> critica, noCritica; //indice para servicio 2
     private ArbolBinario arbolBinario; //indice para servicio 3
-    private SolBacktracking solBacktracking;
+    private Backtracking solBacktracking;
 
     private SolGreedy solGreedy;
 
@@ -29,7 +29,7 @@ public class Servicio {
         noCritica=new LinkedList<>();
         leer(path,this.procesadores);
         leerTareas(pathTareas);
-        solBacktracking = new SolBacktracking(tareas,procesadores);
+        solBacktracking = new Backtracking(procesadores,tareas);
         this.solGreedy = new SolGreedy(procesadores, tareas);
     }
     /*
@@ -64,7 +64,7 @@ public class Servicio {
         solGreedy.greedy(tiempoDEMax);
         if (solGreedy.existeSol()){
             System.out.println("Servicio:\nExiste una solucion\nLlamar Backtracking: TRUE");
-            solBacktracking.backtracking(tiempoDEMax);
+            solBacktracking.backtrack(tiempoDEMax);
         }
         else {
             System.out.println("Servicio:\nNo existe una solucion\nLlamar Backtracking: FALSE");
