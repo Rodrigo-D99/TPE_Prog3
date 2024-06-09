@@ -10,6 +10,7 @@ public class Servicio {
     private LinkedList<Procesador>procesadors;
     private LinkedList<Tarea> critica, noCritica; //indice para servicio 2
     private ArbolBinario arbolBinario; //indice para servicio 3
+    private Backtracking back;
 
     //Completar con las estructuras y métodos privados que se
    /* requieran.
@@ -25,6 +26,7 @@ public class Servicio {
         noCritica=new LinkedList<>();
         leerProcesadores(pathProcesadores,this.procesadors);
         leerTareas(pathTareas);
+        back=new Backtracking(procesadors,tareas);
     }
     /*
      * Expresar la complejidad temporal del servicio 1.
@@ -99,4 +101,9 @@ public class Servicio {
             else
                 this.noCritica.add(t);
     }}
+
+    public void asignarTareas(int tiempoDEMax){
+            back.backtrack(tiempoDEMax);
+
+    }
 }

@@ -12,6 +12,7 @@ public class LeerArchivo {
         String procesadoresArchivo;
         String tareasArchivo;
         boolean archivosValidos = false;
+        String asignarTareas;
 
         while (!archivosValidos) {
             System.out.println("Ingrese el nombre del archivo de procesadores (con extensión .csv):");
@@ -32,7 +33,13 @@ public class LeerArchivo {
                 List<Tarea> pruebaServ2T = s.servicio2(true);
                 List<Tarea> pruebaServ2F = s.servicio2(false);
                 List<Tarea> pruebaServ3 = s.servicio3(2,15);
+                asignarTareas = "y";
 
+                if(asignarTareas.equalsIgnoreCase("Y")){
+                    System.out.println("Ingrese el tiempo de ejecucion max para los procesadores no refrigerados:");
+                    //tiempoDEMax = Integer.parseInt(scanner.nextLine());
+                    s.asignarTareas(15);
+                }
 
                 String ss=" ";
 

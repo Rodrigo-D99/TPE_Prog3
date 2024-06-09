@@ -7,7 +7,7 @@ public class Backtracking {
     private Map<Procesador, List<Tarea>> mejorAsignacion;
     private int mejorTiempoMaximo;
     private int cantidadEstadosGenerados;
-    private int tiempoMaxNoRefrigerado;
+
 
     /**
      * Esta clase implementa una estrategia de backtracking para asignar tareas a procesadores,
@@ -15,26 +15,29 @@ public class Backtracking {
      * 1. Ningún procesador puede ejecutar más de 2 tareas críticas.
      * 2. Los procesadores no refrigerados no pueden exceder un tiempo máximo de ejecución especificado.
      */
-    public Backtracking(List<Procesador> procesadores, List<Tarea> tareas, int tiempoMaxNoRefrigerado) {
+    public Backtracking(List<Procesador> procesadores, List<Tarea> tareas) {
         this.procesadores = procesadores;
         this.tareas = tareas;
-        this.tiempoMaxNoRefrigerado = tiempoMaxNoRefrigerado;
         this.mejorAsignacion = new HashMap<>();
         this.mejorTiempoMaximo = Integer.MAX_VALUE;
         this.cantidadEstadosGenerados = 0;
+        setMejorAsignacion();
 
 
+    }
+    private void setMejorAsignacion(){
         for (Procesador procesador : procesadores) {
-            mejorAsignacion.put(procesador, new ArrayList<>());
+            mejorAsignacion.put(procesador, new LinkedList<>());
         }
     }
-
 
     /**
      * Inicia el proceso de asignación de tareas utilizando la técnica de backtracking.
      */
-    public void asignarTareas() {
-        backtrack(new HashMap<>(), 0);
+    public void backtrack(int tiempoX) {
+        if (!this.tareas.isEmpty() && !this.procesadores.isEmpty() && tiempoX>0)
+            backtrack(new HashMap<>(), 0,tiempoX);
+
     }
 
     /**
@@ -42,14 +45,14 @@ public class Backtracking {
      * @param asignacionActual Mapa que representa la asignación actual de tareas a procesadores.
      * @param tareaIndex Índice de la tarea actual a asignar.
      */
-    private void backtrack(Map<Procesador, List<Tarea>> asignacionActual, int tareaIndex) {
+    private void backtrack(Map<Procesador, List<Tarea>> asignacionActual, int tareaIndex,int tiempoX) {
         if (tareaIndex == tareas.size()) {
             int tiempoMaximo = calcularTiempoMaximo(asignacionActual);
             if (tiempoMaximo < mejorTiempoMaximo) {
                 mejorTiempoMaximo = tiempoMaximo;
                 mejorAsignacion = new HashMap<>();
                 for (Procesador p : asignacionActual.keySet()) {
-                    mejorAsignacion.put(p, new ArrayList<>(asignacionActual.get(p)));
+                    mejorAsignacion.put(p, new LinkedList<>(asignacionActual.get(p)));
                 }
             }
             cantidadEstadosGenerados++;
@@ -58,13 +61,15 @@ public class Backtracking {
 
         Tarea tarea = tareas.get(tareaIndex);
         for (Procesador procesador : procesadores) {
-            if (puedeAsignar(procesador, tarea, asignacionActual)) {
-                asignacionActual.putIfAbsent(procesador, new ArrayList<>());
+            if (puedeAsignar(procesador, tarea, asignacionActual,tiempoX)) {
+                asignacionActual.putIfAbsent(procesador, new LinkedList<>());
                 asignacionActual.get(procesador).add(tarea);
-                backtrack(asignacionActual, tareaIndex + 1);
+                backtrack(asignacionActual, tareaIndex + 1,tiempoX);
+                mostrarResultado();
                 asignacionActual.get(procesador).remove(tarea);
             }
         }
+
     }
 
     /**
@@ -74,8 +79,8 @@ public class Backtracking {
      * @param asignacionActual Mapa que representa la asignación actual de tareas a procesadores.
      * @return true si la tarea puede ser asignada al procesador, false en caso contrario.
      */
-    private boolean puedeAsignar(Procesador procesador, Tarea tarea, Map<Procesador, List<Tarea>> asignacionActual) {
-        List<Tarea> tareasAsignadas = asignacionActual.getOrDefault(procesador, new ArrayList<>());
+    private boolean puedeAsignar(Procesador procesador, Tarea tarea, Map<Procesador, List<Tarea>> asignacionActual,int tiempoMaxNoRefrigerado) {
+        List<Tarea> tareasAsignadas = asignacionActual.getOrDefault(procesador, new LinkedList<>());
 
         // Verificar el número de tareas críticas
         long tareasCriticas = tareasAsignadas.stream().filter(Tarea::is_critica).count();
@@ -84,7 +89,7 @@ public class Backtracking {
         }
 
         // Verificar el tiempo máximo para procesadores no refrigerados
-        if (!procesador.is_refrigerado()) {
+        if ((!procesador.is_refrigerado() || procesador.getTiempoEjecucionMaximo() + tarea.getTiempo_ejec() <= tiempoMaxNoRefrigerado)) {
             int tiempoTotal = tareasAsignadas.stream().mapToInt(Tarea::getTiempo_ejec).sum();
             if (tiempoTotal + tarea.getTiempo_ejec() > tiempoMaxNoRefrigerado) {
                 return false;
