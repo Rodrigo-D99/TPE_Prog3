@@ -30,7 +30,7 @@ public class Servicio {
     }
     /*
      * Expresar la complejidad temporal del servicio 1.
-     * LOG(N)
+     * O(1)
      */
     public Tarea servicio1(String ID) {
         return this.tareaXID.getTarea(ID);

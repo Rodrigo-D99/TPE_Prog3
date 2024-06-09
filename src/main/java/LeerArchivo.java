@@ -38,7 +38,7 @@ public class LeerArchivo {
                 if(asignarTareas.equalsIgnoreCase("Y")){
                     System.out.println("Ingrese el tiempo de ejecucion max para los procesadores no refrigerados:");
                     //tiempoDEMax = Integer.parseInt(scanner.nextLine());
-                    s.asignarTareas(15);
+                    s.asignarTareas(600);
                 }
 
                 String ss=" ";

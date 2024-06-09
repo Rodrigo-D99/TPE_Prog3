@@ -20,7 +20,7 @@ public class Backtracking {
         this.tareas = tareas;
         this.mejorAsignacion = new HashMap<>();
         this.mejorTiempoMaximo = Integer.MAX_VALUE;
-        this.cantidadEstadosGenerados = 0;
+        this.cantidadEstadosGenerados = 1;
         setMejorAsignacion();
 
 
@@ -54,6 +54,7 @@ public class Backtracking {
                 for (Procesador p : asignacionActual.keySet()) {
                     mejorAsignacion.put(p, new LinkedList<>(asignacionActual.get(p)));
                 }
+                mostrarResultado();
             }
             cantidadEstadosGenerados++;
             return;
@@ -65,8 +66,8 @@ public class Backtracking {
                 asignacionActual.putIfAbsent(procesador, new LinkedList<>());
                 asignacionActual.get(procesador).add(tarea);
                 backtrack(asignacionActual, tareaIndex + 1,tiempoX);
-                mostrarResultado();
                 asignacionActual.get(procesador).remove(tarea);
+                 //imprimir muestra repetido el codigo
             }
         }
 
@@ -89,11 +90,9 @@ public class Backtracking {
         }
 
         // Verificar el tiempo máximo para procesadores no refrigerados
-        if ((!procesador.is_refrigerado() || procesador.getTiempoEjecucionMaximo() + tarea.getTiempo_ejec() <= tiempoMaxNoRefrigerado)) {
+        else if ((!procesador.is_refrigerado() || procesador.getTiempoEjecucionMaximo() + tarea.getTiempo_ejec() <= tiempoMaxNoRefrigerado)) {
             int tiempoTotal = tareasAsignadas.stream().mapToInt(Tarea::getTiempo_ejec).sum();
-            if (tiempoTotal + tarea.getTiempo_ejec() > tiempoMaxNoRefrigerado) {
-                return false;
-            }
+            return tiempoTotal + tarea.getTiempo_ejec() <= tiempoMaxNoRefrigerado;
         }
 
         return true;
@@ -128,7 +127,7 @@ public class Backtracking {
             }
         }
         System.out.println("Solución obtenida: tiempo máximo de ejecución: " + mejorTiempoMaximo);
-        System.out.println("Métrica para analizar el costo de la solución (cantidad de estados generados): " + cantidadEstadosGenerados);
+        System.out.println("Métrica para analizar el costo de la solución (cantidad de estados generados): " + cantidadEstadosGenerados+"\n");
     }
 
 }
