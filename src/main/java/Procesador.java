@@ -1,10 +1,22 @@
+<<<<<<< HEAD
 import java.util.LinkedList;
 import java.util.List;
 
 public class Procesador {
+=======
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+public class Procesador implements Comparable<Procesador>{
+>>>>>>> intentoBackRama
     private int id,anio_funcionamiento;
     private String codigo;
     private boolean is_refrigerado;
+    private LinkedList<Tarea> tareas;
+
+    private int tareasCriticas;
+
     private LinkedList<Tarea> tareas;
 
     private int tareasCriticas;
@@ -14,8 +26,32 @@ public class Procesador {
         this.anio_funcionamiento = anio_funcionamiento;
         this.is_refrigerado = is_refrigerado;
         this.codigo = codigo;
-        tareasCriticas=0;
-        tareas=new LinkedList<>();
+        this.tareas = new LinkedList<>();
+        this.tareasCriticas = 0;
+    }
+
+    public void addTarea(Tarea t){
+        if (t.is_critica())
+            tareasCriticas++;
+        this.tareas.add(t);
+    }
+
+    public int cantTareasCriticas() {
+        return tareasCriticas;
+    }
+
+    public void removeTarea(Tarea t){
+        if (t.is_critica())
+            tareasCriticas--;
+        tareas.remove(t);
+    }
+
+    public int getTiempoEjecucionMaximo(){
+        return this.tareas.stream().mapToInt(Tarea::getTiempo_ejec).sum();
+    }
+
+    public List<Tarea> getTareas() {
+        return new LinkedList<>(tareas);
     }
 
     public void addTarea(Tarea t){
@@ -46,10 +82,8 @@ public class Procesador {
     public String getCodigo() {
         return codigo;
     }
-    public int getTiempoEjecucionMaximo(){
-        return this.tareas.stream().mapToInt(Tarea::getTiempo_ejec).sum();
-    }
-    public boolean is_refrigerado() {
+
+    public boolean isRefrigerado() {
         return is_refrigerado;
     }
 
@@ -61,5 +95,18 @@ public class Procesador {
                 ", codigo='" + codigo + '\'' +
                 ", is_refrigerado=" + is_refrigerado +
                 '}';
+    }
+
+    public Procesador getCopy(){
+        Procesador p = new Procesador(this.id, this.anio_funcionamiento, this.is_refrigerado, this.codigo);
+        this.tareas.forEach(t -> {
+            p.addTarea(t.getCopy());
+        });
+        return p;
+    }
+
+    @Override
+    public int compareTo(Procesador o) {
+        return Integer.compare(this.getTiempoEjecucionMaximo(), o.getTiempoEjecucionMaximo());
     }
 }

@@ -5,32 +5,41 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Servicio {
+    private final int MAX_TIEMPO = 100;
     private HashTableManager tareaXID; //indice para servicio 1
     private LinkedList<Tarea> tareas;
-    private LinkedList<Procesador>procesadors;
+    private LinkedList<Procesador>procesadores;
     private LinkedList<Tarea> critica, noCritica; //indice para servicio 2
     private ArbolBinario arbolBinario; //indice para servicio 3
-    private Backtracking back;
+    private SolBacktracking solBacktracking;
+
+    private SolGreedy solGreedy;
 
     //Completar con las estructuras y métodos privados que se
    /* requieran.
 
      * Expresar la complejidad temporal del constructor.
      */
-    public Servicio(String pathProcesadores, String pathTareas) {
+    public Servicio(String path, String pathTareas) {
         tareas=new LinkedList<>();
-        procesadors=new LinkedList<>();
+        procesadores=new LinkedList<>();
         tareaXID=new HashTableManager();
         arbolBinario=new ArbolBinario();
         critica=new LinkedList<>();
         noCritica=new LinkedList<>();
-        leerProcesadores(pathProcesadores,this.procesadors);
-        leerTareas(pathTareas);
-        back=new Backtracking(procesadors,tareas);
+        Lector.leerProcesadores(path,this.procesadores);
+        Lector.leerTareas(pathTareas, this);
+        /*
+            Cada clase tiene una lista de procesadores y tareas independiente.
+            En tiempo de ejecucion las clases pueden usar el metodo getCopy de Procesador
+             para mantener sincronizadas las asignaciones que va realizando
+        * */
+        solBacktracking = new SolBacktracking(getProcesadores(),getTareas());
+        solGreedy = new SolGreedy(getProcesadores(), getTareas());
     }
     /*
      * Expresar la complejidad temporal del servicio 1.
-     * O(1)
+     * O(n)
      */
     public Tarea servicio1(String ID) {
         return this.tareaXID.getTarea(ID);
@@ -46,6 +55,7 @@ public class Servicio {
     }
     /*
      * Expresar la complejidad temporal del servicio 3.
+     * O(n)
      */
     public List<Tarea> servicio3(int prioridadInferior, int prioridadSuperior) {
         prioridadInferior = Math.max(prioridadInferior, 0);
@@ -55,43 +65,20 @@ public class Servicio {
         return null;
     }
 
-    private static void leerProcesadores(String archivo, List<Procesador> lista) {
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            br.readLine(); // Leer y descartar la primera línea (encabezado)
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(";");
-                int id = Integer.parseInt(datos[0]);
-                String codigo = datos[1];
-                boolean refrigerado = Boolean.parseBoolean(datos[2]);
-                int anio = Integer.parseInt(datos[3]);
-                Procesador procesador = new Procesador(id,anio,refrigerado,codigo);
-                lista.add(procesador);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void asignarTareas(int tiempoDEMax){
+        tiempoDEMax = Math.abs(tiempoDEMax);
+        System.out.println("\n\nServicio: llamar Greedy\n");
+        solGreedy.greedy(tiempoDEMax);
+        if (solGreedy.existeSol()){
+            System.out.println("\n\nServicio: existe una solucion, llamar Backtracking=TRUE\n");
+            solBacktracking.backtracking(tiempoDEMax);
         }
-    }
-    private void leerTareas(String archivo) {
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            br.readLine(); // Leer y descartar la primera línea (encabezado)
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(";");
-                int id = Integer.parseInt(datos[0]);
-                String nombre = datos[1];
-                int tiempo = Integer.parseInt(datos[2]);
-                boolean critica = Boolean.parseBoolean(datos[3]);
-                int prioridad = Integer.parseInt(datos[4]);
-                Tarea tarea = new Tarea(id, nombre, tiempo, critica, prioridad);
-                this.addTarea(tarea);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        else {
+            System.out.println("Servicio:\nNo existe una solucion\nLlamar Backtracking: FALSE");
         }
     }
 
-    private void addTarea(Tarea t){
+    public void addTarea(Tarea t){
         if (t!=null){
             tareas.add(t);
             this.arbolBinario.addNodo(new Nodo(t));
@@ -102,8 +89,15 @@ public class Servicio {
                 this.noCritica.add(t);
     }}
 
-    public void asignarTareas(int tiempoDEMax){
-            back.backtrack(tiempoDEMax);
+    public LinkedList<Tarea> getTareas() {
+        LinkedList<Tarea> temp = new LinkedList<>();
+        this.tareas.forEach(t -> temp.add(t.getCopy()));
+        return temp;
+    }
 
+    public LinkedList<Procesador> getProcesadores() {
+        LinkedList<Procesador> temp = new LinkedList<>();
+        this.procesadores.forEach(p -> temp.add(p.getCopy()));
+        return temp;
     }
 }

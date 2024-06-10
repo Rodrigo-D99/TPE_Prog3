@@ -1,16 +1,17 @@
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class LeerArchivo {
+public class Main {
 
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String procesadoresArchivo;
         String tareasArchivo;
+        String asignarTareas;
+        int tiempoDEMax;
         boolean archivosValidos = false;
         String asignarTareas;
 
@@ -41,6 +42,16 @@ public class LeerArchivo {
                     s.asignarTareas(600);
                 }
 
+                System.out.println("Desea asignar las tareas a los procesadores? Y/N");
+                //asignarTareas = scanner.nextLine();
+                asignarTareas = "y";
+
+                if(asignarTareas.equalsIgnoreCase("Y")){
+                    System.out.println("Ingrese el tiempo de ejecucion max para los procesadores no refrigerados:");
+                    //tiempoDEMax = Integer.parseInt(scanner.nextLine());
+                    s.asignarTareas(100);
+                }
+
                 String ss=" ";
 
             } else {
@@ -48,10 +59,7 @@ public class LeerArchivo {
             }
         }
         scanner.close();
-
     }
-
-
 }
 
 
