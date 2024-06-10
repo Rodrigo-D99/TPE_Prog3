@@ -4,16 +4,18 @@ public class SolGreedy {
     private List<Tarea> tareas;
     private List<Procesador> procesadores;
     private int tiempoMaximo;
-    private int estadosGenerados;
+    private int candidatosConsiderados;
     private int cantTareasAsignadas;
     private boolean existeSol;
 
     public SolGreedy(List<Procesador> procesadores, List<Tarea> tareas){
         this.tiempoMaximo = 0;
         this.cantTareasAsignadas = 0;
-        this.estadosGenerados = 0;
-        this.procesadores = new ArrayList<>(procesadores);
-        this.tareas = new ArrayList<>(tareas);
+        this.candidatosConsiderados = 0;
+        this.procesadores =new ArrayList<>();
+        this.tareas = new ArrayList<>();
+        procesadores.forEach(p -> this.procesadores.add(p.getCopy()));
+        tareas.forEach(t -> this.tareas.add(t.getCopy()));
         this.existeSol = false;
     }
 
@@ -25,7 +27,7 @@ public class SolGreedy {
             printSolucion(solucion);
             this.existeSol = true;
         }else{
-            System.out.println("Estados Generados: " + estadosGenerados);
+            System.out.println("Estados Generados: " + candidatosConsiderados);
             System.out.println("Tareas asignadas: " + cantTareasAsignadas);
             System.out.println("No hay solucion posible\n");
         }
@@ -45,7 +47,7 @@ public class SolGreedy {
                 if(isValido(p,t,tiempoX)){
                     int tiempoMaximo = p.getTiempoEjecucionMaximo();
                     if(tiempoMaximo < menorTiempoMaximoProcesador){
-                        this.estadosGenerados++;
+                        this.candidatosConsiderados++;
                         menorTiempoMaximoProcesador = tiempoMaximo;
                         procesadorConMenosCarga = p;
                         if (cantTareasAsignadas==0)//Solo sirve para la primer tarea
@@ -97,7 +99,7 @@ public class SolGreedy {
             System.out.println("Procesador " + p.getId() + " Tiempo="+ p.getTiempoEjecucionMaximo() +" - Tareas: Cantidad="+ p.getTareas().size() +" Detalle=" + p.getTareas());
         });
         System.out.println("Tiempo maximo de Ejecucion: "+this.tiempoMaximo);
-        System.out.println("Estados Generados: " + estadosGenerados);
+        System.out.println("Candidatos Considerados: " + candidatosConsiderados);
     }
 
     public boolean existeSol() {

@@ -11,7 +11,7 @@ public class Servicio {
     private LinkedList<Procesador>procesadores;
     private LinkedList<Tarea> critica, noCritica; //indice para servicio 2
     private ArbolBinario arbolBinario; //indice para servicio 3
-    private Backtracking solBacktracking;
+    private SolBacktracking solBacktracking;
 
     private SolGreedy solGreedy;
 
@@ -29,8 +29,8 @@ public class Servicio {
         noCritica=new LinkedList<>();
         leer(path,this.procesadores);
         leerTareas(pathTareas);
-        solBacktracking = new Backtracking(procesadores,tareas);
-        this.solGreedy = new SolGreedy(procesadores, tareas);
+        solBacktracking = new SolBacktracking(getProcesadores(),getTareas());
+        this.solGreedy = new SolGreedy(getProcesadores(), getTareas());
     }
     /*
      * Expresar la complejidad temporal del servicio 1.
@@ -63,14 +63,13 @@ public class Servicio {
         tiempoDEMax = Math.abs(tiempoDEMax);
         System.out.println("\n\nServicio: llamar Greedy\n");
         solGreedy.greedy(tiempoDEMax);
-        solBacktracking.backtracking(tiempoDEMax);
-//        if (solGreedy.existeSol()){
-//            System.out.println("\n\nServicio: existe una solucion, llamar Backtracking=TRUE\n");
-//            solBacktracking.backtracking(tiempoDEMax);
-//        }
-//        else {
-//            System.out.println("Servicio:\nNo existe una solucion\nLlamar Backtracking: FALSE");
-//        }
+        if (solGreedy.existeSol()){
+            System.out.println("\n\nServicio: existe una solucion, llamar Backtracking=TRUE\n");
+            solBacktracking.backtracking(tiempoDEMax);
+        }
+        else {
+            System.out.println("Servicio:\nNo existe una solucion\nLlamar Backtracking: FALSE");
+        }
     }
 
     private static void leer(String archivo, List<Procesador> lista) {
@@ -119,4 +118,16 @@ public class Servicio {
             else
                 this.noCritica.add(t);
     }}
+
+    public LinkedList<Tarea> getTareas() {
+        LinkedList<Tarea> temp = new LinkedList<>();
+        this.tareas.forEach(t -> temp.add(t.getCopy()));
+        return temp;
+    }
+
+    public LinkedList<Procesador> getProcesadores() {
+        LinkedList<Procesador> temp = new LinkedList<>();
+        this.procesadores.forEach(p -> temp.add(p.getCopy()));
+        return temp;
+    }
 }
