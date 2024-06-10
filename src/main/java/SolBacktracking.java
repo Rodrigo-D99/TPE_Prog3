@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SolBacktracking {
@@ -12,7 +13,7 @@ public class SolBacktracking {
     public SolBacktracking(List<Procesador> procesadores, List<Tarea> tareas){
         this.asignacionesRealizadas = 0;
         this.mejorTiempoMaximo = 0;
-        this.procesadores =new ArrayList<>();
+        this.procesadores = new ArrayList<>();
         this.tareas = new ArrayList<>();
         procesadores.forEach(p -> this.procesadores.add(p.getCopy()));
         tareas.forEach(t -> this.tareas.add(t.getCopy()));
@@ -22,26 +23,19 @@ public class SolBacktracking {
     public void backtracking(int tiempoX) {
         System.out.println("\nBacktracking:");
         this.solucionesEvaluadas = 0;
+        Collections.sort(tareas);//esto junto con el metodo tieneTareasPeroOtrosNo, ayuda a lograr una distribucion
+        //de carga mas pareja para las primeras tareas
         back(new ArrayList<>(procesadores), 0, 0, tiempoX);
-        if(!mejorSolucion.isEmpty() && this.mejorTiempoMaximo!=0){
+        if (!mejorSolucion.isEmpty() && this.mejorTiempoMaximo != 0) {
             mostrarSolucion(mejorSolucion);
-        }
-        else{
+        } else {
             System.out.println("No hay solucion posible");
         }
     }
 
     private void back(List<Procesador> solucion, int index, int tiempoMaximo, int tiempoX) {
         if (index == tareas.size()) {
-            if (mejorSolucion.isEmpty() && mejorTiempoMaximo == 0 || tiempoMaximo < mejorTiempoMaximo) {
-                mejorSolucion.clear();
-                for (Procesador p : solucion) {
-                    System.out.println("Procesador " + p.getId() + " Tiempo="+ p.getTiempoEjecucionMaximo() +" - Tareas: Cantidad="+ p.getTareas().size() +" Detalle=" + p.getTareas());
-                    mejorSolucion.add(p.getCopy());
-                }
-                mejorTiempoMaximo = tiempoMaximo;
-            }
-            this.solucionesEvaluadas++;
+            actualizarMejorSolucion(solucion, tiempoMaximo);
         } else {
             Tarea t = tareas.get(index);
             for (Procesador p : solucion) {
@@ -58,11 +52,27 @@ public class SolBacktracking {
         }
     }
 
+    private void actualizarMejorSolucion(List<Procesador> solucion, int tiempoMaximo) {
+        if (mejorSolucion.isEmpty() && mejorTiempoMaximo == 0 || tiempoMaximo < mejorTiempoMaximo) {
+            mejorSolucion.clear();
+            for (Procesador p : solucion) {
+                mejorSolucion.add(p.getCopy());
+            }
+            mejorTiempoMaximo = tiempoMaximo;
+        }
+        this.solucionesEvaluadas++;
+    }
+
+
+    private boolean isValido(Procesador p, Tarea t, int tiempoX){
+        return p.cantTareasCriticas() < 2 || !t.is_critica() && (p.isRefrigerado() || p.getTiempoEjecucionMaximo() + t.getTiempo_ejec() <= tiempoX);
+    }
+
     /*
         La idea de este metodo es garantizar que todas las soluciones contemplen que
-        todos los procesadores tengan por lo menos 1 tarea
-        esto hace que las asignaciones de tareas bajen de 6364659 a 1131556
-        y las soluciones completas bajan de 56 a 23.
+        todos los procesadores tengan por lo menos 1 tarea,
+        esto hace que las asignaciones de tareas bajen de +6M a +2k
+        y las soluciones completas bajan de 56 a 40.
     */
     private boolean tieneTareasPeroOtrosNo(List<Procesador> procesadores, Procesador p) {
         if (!p.getTareas().isEmpty()) {
@@ -75,16 +85,12 @@ public class SolBacktracking {
         return false;
     }
 
-    private boolean isValido(Procesador p, Tarea t, int tiempoX){
-        return p.cantTareasCriticas() < 2 || !t.is_critica() && (p.isRefrigerado() || p.getTiempoEjecucionMaximo() + t.getTiempo_ejec() <= tiempoX);
-    }
-
     private void mostrarSolucion(List<Procesador> lista){
         System.out.println("Solucion obtenida: ");
         lista.forEach(p -> {
-            System.out.println("Procesador " + p.getId() + " Tiempo="+ p.getTiempoEjecucionMaximo() +" - Tareas: Cantidad="+ p.getTareas().size() +" Detalle=" + p.getTareas());
+            System.out.println("Procesador " + p.getId() + " Tiempo=" + p.getTiempoEjecucionMaximo() + " - Tareas: Cantidad=" + p.getTareas().size() + " Detalle=" + p.getTareas());
         });
-        System.out.println("Tiempo maximo de Ejecucion: "+ mejorTiempoMaximo);
+        System.out.println("Tiempo maximo de Ejecucion: " + mejorTiempoMaximo);
         System.out.println("Asignaciones Realizadas: " + asignacionesRealizadas);
         System.out.println("Soluciones completas evaluadas: " + solucionesEvaluadas);
     }
