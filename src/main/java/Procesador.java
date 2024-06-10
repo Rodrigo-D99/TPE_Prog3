@@ -1,7 +1,8 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Procesador {
+public class Procesador implements Comparable<Procesador>{
     private int id,anio_funcionamiento;
     private String codigo;
     private boolean is_refrigerado;
@@ -14,14 +15,8 @@ public class Procesador {
         this.anio_funcionamiento = anio_funcionamiento;
         this.is_refrigerado = is_refrigerado;
         this.codigo = codigo;
-        tareasCriticas=0;
-        tareas=new LinkedList<>();
-    }
-
-    public void addTarea(Tarea t){
-        if (t.is_critica())
-            tareasCriticas++;
-        this.tareas.add(t);
+        this.tareas = new LinkedList<>();
+        this.tareasCriticas = 0;
     }
 
     public int cantTareasCriticas() {
@@ -29,7 +24,19 @@ public class Procesador {
     }
 
     public void removeTarea(Tarea t){
+        if (t.is_critica())
+            tareasCriticas--;
         tareas.remove(t);
+    }
+
+    public int getTiempoEjecucionMaximo(){
+        return this.tareas.stream().mapToInt(Tarea::getTiempo_ejec).sum();
+    }
+
+    public void addTarea(Tarea t){
+        if (t.is_critica())
+            tareasCriticas++;
+        this.tareas.add(t);
     }
 
     public List<Tarea> getTareas() {
@@ -46,10 +53,8 @@ public class Procesador {
     public String getCodigo() {
         return codigo;
     }
-    public int getTiempoEjecucionMaximo(){
-        return this.tareas.stream().mapToInt(Tarea::getTiempo_ejec).sum();
-    }
-    public boolean is_refrigerado() {
+
+    public boolean isRefrigerado() {
         return is_refrigerado;
     }
 
@@ -61,5 +66,18 @@ public class Procesador {
                 ", codigo='" + codigo + '\'' +
                 ", is_refrigerado=" + is_refrigerado +
                 '}';
+    }
+
+    public Procesador getCopy(){
+        Procesador p = new Procesador(this.id, this.anio_funcionamiento, this.is_refrigerado, this.codigo);
+        this.tareas.forEach(t -> {
+            p.addTarea(t.getCopy());
+        });
+        return p;
+    }
+
+    @Override
+    public int compareTo(Procesador o) {
+        return Integer.compare(this.getTiempoEjecucionMaximo(), o.getTiempoEjecucionMaximo());
     }
 }

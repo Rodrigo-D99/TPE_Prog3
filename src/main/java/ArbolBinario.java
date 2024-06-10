@@ -63,8 +63,10 @@ class ArbolBinario {
         if (prioridad >= prioridadInferior && prioridad <= prioridadSuperior) {
             result.addAll(nodo.getInfo());
         }
-        getNodosPrioridad(nodo.getIzq(), prioridadInferior, prioridadSuperior, result);
-        getNodosPrioridad(nodo.getDer(), prioridadInferior, prioridadSuperior, result);
+        if (!(prioridad < prioridadInferior))
+            getNodosPrioridad(nodo.getIzq(), prioridadInferior, prioridadSuperior, result);
+        if (!(prioridad>prioridadSuperior))
+            getNodosPrioridad(nodo.getDer(), prioridadInferior, prioridadSuperior, result);
     }
 
     private int altura(Nodo nodo) {
@@ -94,19 +96,3 @@ class ArbolBinario {
     }
 
 }
-
-//    public static void main(String[] args) {
-//        ArbolBinario tree = new ArbolBinario();
-//        tree.raiz = new Nodo(10);
-//        tree.raiz.getDer() = new Nodo(30);
-//        tree.raiz.getDer().getDer() = new Nodo(36);
-//        tree.raiz.getDer().getIzq() = new Nodo(14);
-//        tree.raiz.getIzq() = new Nodo(8);
-//        tree.raiz.getIzq().getIzq() = new Nodo(7);
-//        tree.raiz.getIzq().getIzq().getIzq() = new Nodo(6);
-//        tree.raiz.getIzq().getIzq().getIzq().getIzq() = new Nodo(5);
-//
-//        tree.raiz = tree.balancearArbolDesgetder(tree.raiz);
-//        System.out.println("PreorgetDer() traversal of balanced BST is :");
-//        tree.preOrden(tree.raiz);
-//    }
