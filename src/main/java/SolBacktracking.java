@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SolBacktracking {
@@ -6,10 +7,11 @@ public class SolBacktracking {
     private List<Procesador> procesadores;
     private List<Procesador> mejorSolucion;
     private int mejorTiempoMaximo;
-    private int candidatosConsiderados;
+    private int asignacionesRealizadas;
+    private int solucionesEvaluadas;
 
     public SolBacktracking(List<Procesador> procesadores, List<Tarea> tareas){
-        this.candidatosConsiderados = 0;
+        this.asignacionesRealizadas = 0;
         this.mejorTiempoMaximo = 0;
         this.procesadores =new ArrayList<>();
         this.tareas = new ArrayList<>();
@@ -20,7 +22,8 @@ public class SolBacktracking {
 
     public void backtracking(int tiempoX) {
         System.out.println("\nBacktracking:");
-        back(new ArrayList<>(procesadores), 0,0,tiempoX);
+        this.solucionesEvaluadas = 0;
+        back(new ArrayList<>(procesadores), 0, 0, tiempoX);
         if(!mejorSolucion.isEmpty() && this.mejorTiempoMaximo!=0){
             mostrarSolucion(mejorSolucion);
         }
@@ -34,24 +37,37 @@ public class SolBacktracking {
             if (mejorSolucion.isEmpty() && mejorTiempoMaximo == 0 || tiempoMaximo < mejorTiempoMaximo) {
                 mejorSolucion.clear();
                 for (Procesador p : solucion) {
+                    System.out.println("Procesador " + p.getId() + " Tiempo="+ p.getTiempoEjecucionMaximo() +" - Tareas: Cantidad="+ p.getTareas().size() +" Detalle=" + p.getTareas());
                     mejorSolucion.add(p.getCopy());
                 }
                 mejorTiempoMaximo = tiempoMaximo;
             }
+            this.solucionesEvaluadas++;
         } else {
-            this.candidatosConsiderados++;
             Tarea t = tareas.get(index);
             for (Procesador p : solucion) {
-                if(isValido(p,t,tiempoX)){
+                if (isValido(p, t, tiempoX) && !tieneTareasPeroOtrosNo(solucion, p)) {
+                    this.asignacionesRealizadas++;
                     p.addTarea(t);
                     int nuevoTiempoMaximo = Math.max(p.getTiempoEjecucionMaximo(), tiempoMaximo);
-                    if(mejorTiempoMaximo==0 || nuevoTiempoMaximo < this.mejorTiempoMaximo){
-                        back(solucion, index + 1,nuevoTiempoMaximo,tiempoX);
+                    if (mejorTiempoMaximo == 0 || nuevoTiempoMaximo < this.mejorTiempoMaximo) {
+                        back(solucion, index + 1, nuevoTiempoMaximo, tiempoX);
                     }
                     p.removeTarea(t);
                 }
             }
         }
+    }
+
+    private boolean tieneTareasPeroOtrosNo(List<Procesador> procesadores, Procesador p) {
+        if (!p.getTareas().isEmpty()) {
+            for (Procesador otroProcesador : procesadores) {
+                if (otroProcesador != p && otroProcesador.getTareas().isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean isValido(Procesador p, Tarea t, int tiempoX){
@@ -64,6 +80,7 @@ public class SolBacktracking {
             System.out.println("Procesador " + p.getId() + " Tiempo="+ p.getTiempoEjecucionMaximo() +" - Tareas: Cantidad="+ p.getTareas().size() +" Detalle=" + p.getTareas());
         });
         System.out.println("Tiempo maximo de Ejecucion: "+ mejorTiempoMaximo);
-        System.out.println("Candidatos Considerados: " + candidatosConsiderados);
+        System.out.println("Asignaciones Realizadas: " + asignacionesRealizadas);
+        System.out.println("Soluciones completas evaluadas: " + solucionesEvaluadas);
     }
 }

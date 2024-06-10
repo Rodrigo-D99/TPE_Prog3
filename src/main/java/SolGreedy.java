@@ -21,7 +21,7 @@ public class SolGreedy {
 
     public void greedy(int tiempoX){
         List<Procesador> solucion;
-        solucion = greedy(new LinkedList<>(procesadores),new LinkedList<>(tareas),tiempoX);
+        solucion = greedy(new LinkedList<>(procesadores), new LinkedList<>(tareas), tiempoX);
         System.out.println("\nGreedy:");
         if(this.tiempoMaximo != 0 && this.cantTareasAsignadas==tareas.size()){
             printSolucion(solucion);
@@ -33,60 +33,29 @@ public class SolGreedy {
         }
     }
 
-    private List<Procesador> greedy(List<Procesador> procesadores, List<Tarea> tareas,int tiempoX){
-        //ordenarTareas(tareas);//Ordenar tareas por tiempo de ejecucion
-        Collections.sort(tareas);
-        int tiempoMaximoGlobal = 0;
-        int menorTiempoMaximoProcesador;
+    private List<Procesador> greedy(List<Procesador> procesadores, List<Tarea> tareas, int tiempoX){
+        Collections.sort(tareas);//Ordenar tareas por tiempo de ejecucion
         while(!tareas.isEmpty()){ // recorrer hasta que no queden tareas por asignar
             Tarea t = tareas.remove(0); //Tomar primera tarea
-            menorTiempoMaximoProcesador = Integer.MAX_VALUE;
             Procesador procesadorConMenosCarga = null;
 
             for(Procesador p:procesadores){
-                if(isValido(p,t,tiempoX)){
-                    int tiempoMaximo = p.getTiempoEjecucionMaximo();
-                    if(tiempoMaximo < menorTiempoMaximoProcesador){
-                        this.candidatosConsiderados++;
-                        menorTiempoMaximoProcesador = tiempoMaximo;
-                        procesadorConMenosCarga = p;
-                        if (cantTareasAsignadas==0)//Solo sirve para la primer tarea
-                            break; //de otra forma se iteran todos los procesadores para la primer tarea
-                    }
+                candidatosConsiderados++;
+                if(isValido(p, t, tiempoX)){
+                    procesadorConMenosCarga = p;
+                    break;
                 }
             }
 
             if (procesadorConMenosCarga != null) {
                 procesadorConMenosCarga.addTarea(t);
-                Collections.sort(procesadores);
+                Collections.sort(procesadores);//ordenar procesadores por tiempo max de ejecucion
                 cantTareasAsignadas++;
-                int tiempoEjecucionActual = procesadorConMenosCarga.getTiempoEjecucionMaximo();
-                if (tiempoEjecucionActual > tiempoMaximoGlobal) {
-                    tiempoMaximoGlobal = tiempoEjecucionActual;
-                }
-            }
+            }else
+                break;
         }
-        this.tiempoMaximo = tiempoMaximoGlobal;
+        this.tiempoMaximo = procesadores.get(procesadores.size()-1).getTiempoEjecucionMaximo();
         return procesadores;
-    }
-
-    private <T extends Comparable<T>> void ordenarTareas(List<Tarea> list) {
-        int n = list.size();
-        boolean swapped;
-        for (int i = 0; i < n - 1; i++) { //Bubble sort mejorado
-            swapped = false;
-            for (int j = 0; j < n - 1 - i; j++) {
-                if (list.get(j).compareTo(list.get(j + 1)) < 0) {
-                    Tarea temp = list.get(j);
-                    list.set(j, list.get(j + 1));
-                    list.set(j + 1, temp);
-                    swapped = true;
-                }
-            }
-            if (!swapped) {
-                break; // no se hicieron cambios, la lista esta ordenada
-            }
-        }
     }
 
     private boolean isValido(Procesador p, Tarea t, int tiempoX){
