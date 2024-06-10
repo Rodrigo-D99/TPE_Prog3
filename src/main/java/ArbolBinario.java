@@ -63,8 +63,10 @@ class ArbolBinario {
         if (prioridad >= prioridadInferior && prioridad <= prioridadSuperior) {
             result.addAll(nodo.getInfo());
         }
-        getNodosPrioridad(nodo.getIzq(), prioridadInferior, prioridadSuperior, result);
-        getNodosPrioridad(nodo.getDer(), prioridadInferior, prioridadSuperior, result);
+        if (!(prioridad < prioridadInferior))
+            getNodosPrioridad(nodo.getIzq(), prioridadInferior, prioridadSuperior, result);
+        if (!(prioridad>prioridadSuperior))
+            getNodosPrioridad(nodo.getDer(), prioridadInferior, prioridadSuperior, result);
     }
 
     private int altura(Nodo nodo) {

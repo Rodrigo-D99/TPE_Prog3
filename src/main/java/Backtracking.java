@@ -90,7 +90,7 @@ public class Backtracking {
         }
 
         // Verificar el tiempo máximo para procesadores no refrigerados
-        else if ((!procesador.is_refrigerado() || procesador.getTiempoEjecucionMaximo() + tarea.getTiempo_ejec() <= tiempoMaxNoRefrigerado)) {
+        else if ((!procesador.isRefrigerado() || procesador.getTiempoEjecucionMaximo() + tarea.getTiempo_ejec() <= tiempoMaxNoRefrigerado)) {
             int tiempoTotal = tareasAsignadas.stream().mapToInt(Tarea::getTiempo_ejec).sum();
             return tiempoTotal + tarea.getTiempo_ejec() <= tiempoMaxNoRefrigerado;
         }

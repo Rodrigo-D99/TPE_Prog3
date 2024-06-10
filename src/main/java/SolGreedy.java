@@ -26,7 +26,6 @@ public class SolGreedy {
     * Tomando y quitando de la lista a la primer tarea, se busca al procesador valido menos cargado
     * para asignarle la tarea.
     * */
-
     public void greedy(int tiempoX){
         List<Procesador> solucion;
         solucion = greedy(new LinkedList<>(procesadores), new LinkedList<>(tareas), tiempoX);

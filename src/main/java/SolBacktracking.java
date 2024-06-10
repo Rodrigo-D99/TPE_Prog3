@@ -25,8 +25,6 @@ public class SolBacktracking {
     * Ordenar las tareas por tiempo de ejecucion descendente
     * El codigo asegura que cada procesador tenga 1 de las tareas con mayor tiempo de ejecucion.
     * Luego simplemente se prueban distintas formas de asignacion.
-    *
-    *
     * */
     public void backtracking(int tiempoX) {
         System.out.println("\nBacktracking:");

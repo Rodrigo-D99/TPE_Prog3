@@ -1,22 +1,11 @@
-<<<<<<< HEAD
-import java.util.LinkedList;
-import java.util.List;
-
-public class Procesador {
-=======
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Procesador implements Comparable<Procesador>{
->>>>>>> intentoBackRama
     private int id,anio_funcionamiento;
     private String codigo;
     private boolean is_refrigerado;
-    private LinkedList<Tarea> tareas;
-
-    private int tareasCriticas;
-
     private LinkedList<Tarea> tareas;
 
     private int tareasCriticas;
@@ -28,12 +17,6 @@ public class Procesador implements Comparable<Procesador>{
         this.codigo = codigo;
         this.tareas = new LinkedList<>();
         this.tareasCriticas = 0;
-    }
-
-    public void addTarea(Tarea t){
-        if (t.is_critica())
-            tareasCriticas++;
-        this.tareas.add(t);
     }
 
     public int cantTareasCriticas() {
@@ -50,22 +33,10 @@ public class Procesador implements Comparable<Procesador>{
         return this.tareas.stream().mapToInt(Tarea::getTiempo_ejec).sum();
     }
 
-    public List<Tarea> getTareas() {
-        return new LinkedList<>(tareas);
-    }
-
     public void addTarea(Tarea t){
         if (t.is_critica())
             tareasCriticas++;
         this.tareas.add(t);
-    }
-
-    public int cantTareasCriticas() {
-        return tareasCriticas;
-    }
-
-    public void removeTarea(Tarea t){
-        tareas.remove(t);
     }
 
     public List<Tarea> getTareas() {
