@@ -27,14 +27,19 @@ public class Servicio {
         arbolBinario=new ArbolBinario();
         critica=new LinkedList<>();
         noCritica=new LinkedList<>();
-        leer(path,this.procesadores);
-        leerTareas(pathTareas);
+        Lector.leerProcesadores(path,this.procesadores);
+        Lector.leerTareas(pathTareas, this);
+        /*
+            Cada clase tiene una lista de procesadores y tareas independiente.
+            En tiempo de ejecucion las clases pueden usar el metodo getCopy de Procesador
+             para mantener sincronizadas las asignaciones que va realizando
+        * */
         solBacktracking = new SolBacktracking(getProcesadores(),getTareas());
-        this.solGreedy = new SolGreedy(getProcesadores(), getTareas());
+        solGreedy = new SolGreedy(getProcesadores(), getTareas());
     }
     /*
      * Expresar la complejidad temporal del servicio 1.
-     * LOG(N)
+     * O(n)
      */
     public Tarea servicio1(String ID) {
         return this.tareaXID.getTarea(ID);
@@ -50,6 +55,7 @@ public class Servicio {
     }
     /*
      * Expresar la complejidad temporal del servicio 3.
+     * O(n)
      */
     public List<Tarea> servicio3(int prioridadInferior, int prioridadSuperior) {
         prioridadInferior = Math.max(prioridadInferior, 0);
@@ -72,43 +78,7 @@ public class Servicio {
         }
     }
 
-    private static void leer(String archivo, List<Procesador> lista) {
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            br.readLine(); // Leer y descartar la primera línea (encabezado)
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(";");
-                int id = Integer.parseInt(datos[0]);
-                String codigo = datos[1];
-                boolean refrigerado = Boolean.parseBoolean(datos[2]);
-                int anio = Integer.parseInt(datos[3]);
-                Procesador procesador = new Procesador(id,anio,refrigerado,codigo);
-                lista.add(procesador);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    private void leerTareas(String archivo) {
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            br.readLine(); // Leer y descartar la primera línea (encabezado)
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(";");
-                int id = Integer.parseInt(datos[0]);
-                String nombre = datos[1];
-                int tiempo = Integer.parseInt(datos[2]);
-                boolean critica = Boolean.parseBoolean(datos[3]);
-                int prioridad = Integer.parseInt(datos[4]);
-                Tarea tarea = new Tarea(id, nombre, tiempo, critica, prioridad);
-                this.addTarea(tarea);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void addTarea(Tarea t){
+    public void addTarea(Tarea t){
         if (t!=null){
             tareas.add(t);
             this.arbolBinario.addNodo(new Nodo(t));

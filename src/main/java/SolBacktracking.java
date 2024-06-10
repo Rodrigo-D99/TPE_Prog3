@@ -20,11 +20,20 @@ public class SolBacktracking {
         this.mejorSolucion = new ArrayList<>();
     }
 
+
+    /*
+    * Ordenar las tareas por tiempo de ejecucion descendente
+    * El codigo asegura que cada procesador tenga 1 de las tareas con mayor tiempo de ejecucion.
+    * Luego simplemente se prueban distintas formas de asignacion.
+    *
+    *
+    * */
     public void backtracking(int tiempoX) {
         System.out.println("\nBacktracking:");
         this.solucionesEvaluadas = 0;
         Collections.sort(tareas);//esto junto con el metodo tieneTareasPeroOtrosNo, ayuda a lograr una distribucion
         //de carga mas pareja para las primeras tareas
+        // esto en particular hace una reduccion de +6M a +1M
         back(new ArrayList<>(procesadores), 0, 0, tiempoX);
         if (!mejorSolucion.isEmpty() && this.mejorTiempoMaximo != 0) {
             mostrarSolucion(mejorSolucion);
@@ -35,7 +44,7 @@ public class SolBacktracking {
 
     private void back(List<Procesador> solucion, int index, int tiempoMaximo, int tiempoX) {
         if (index == tareas.size()) {
-            actualizarMejorSolucion(solucion, tiempoMaximo);
+            actualizarMejorSolucion(solucion, tiempoMaximo);//se llega a una posible solucion
         } else {
             Tarea t = tareas.get(index);
             for (Procesador p : solucion) {
@@ -71,8 +80,8 @@ public class SolBacktracking {
     /*
         La idea de este metodo es garantizar que todas las soluciones contemplen que
         todos los procesadores tengan por lo menos 1 tarea,
-        esto hace que las asignaciones de tareas bajen de +6M a +2k
-        y las soluciones completas bajan de 56 a 40.
+        esto hace que las asignaciones de tareas bajen de +1M a +2K
+        y que las soluciones completas bajen de 56 a 40.
     */
     private boolean tieneTareasPeroOtrosNo(List<Procesador> procesadores, Procesador p) {
         if (!p.getTareas().isEmpty()) {

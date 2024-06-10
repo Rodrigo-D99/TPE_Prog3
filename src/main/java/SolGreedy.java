@@ -19,6 +19,14 @@ public class SolGreedy {
         this.existeSol = false;
     }
 
+
+    /*
+    * La idea es ordenar las tareas por tiempo de ejecucion descendente
+    * y mantener ordenados los procesadores por tiempo de ejecucion ascendente.
+    * Tomando y quitando de la lista a la primer tarea, se busca al procesador valido menos cargado
+    * para asignarle la tarea.
+    * */
+
     public void greedy(int tiempoX){
         List<Procesador> solucion;
         solucion = greedy(new LinkedList<>(procesadores), new LinkedList<>(tareas), tiempoX);
@@ -52,7 +60,8 @@ public class SolGreedy {
                 Collections.sort(procesadores);//ordenar procesadores por tiempo max de ejecucion
                 cantTareasAsignadas++;
             }else
-                break;
+                break;//si no se selecciono un procesador para la tarea, significa que esta no sera asignada
+                    // por ende no hay una solucion valida
         }
         this.tiempoMaximo = procesadores.get(procesadores.size()-1).getTiempoEjecucionMaximo();
         return procesadores;
