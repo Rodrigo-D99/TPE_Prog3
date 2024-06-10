@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class SolBacktracking {
@@ -59,6 +58,12 @@ public class SolBacktracking {
         }
     }
 
+    /*
+        La idea de este metodo es garantizar que todas las soluciones contemplen que
+        todos los procesadores tengan por lo menos 1 tarea
+        esto hace que las asignaciones de tareas bajen de 6364659 a 1131556
+        y las soluciones completas bajan de 56 a 23.
+    */
     private boolean tieneTareasPeroOtrosNo(List<Procesador> procesadores, Procesador p) {
         if (!p.getTareas().isEmpty()) {
             for (Procesador otroProcesador : procesadores) {
