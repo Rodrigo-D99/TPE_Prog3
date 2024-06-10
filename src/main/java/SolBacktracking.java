@@ -78,7 +78,7 @@ public class SolBacktracking {
     /*
         La idea de este metodo es garantizar que todas las soluciones contemplen que
         todos los procesadores tengan por lo menos 1 tarea,
-        esto hace que las asignaciones de tareas bajen de +1M a +2K
+        esto hace que las asignaciones de tareas bajen de +10K a +2K
         y que las soluciones completas bajen de 56 a 40.
     */
     private boolean tieneTareasPeroOtrosNo(List<Procesador> procesadores, Procesador p) {
