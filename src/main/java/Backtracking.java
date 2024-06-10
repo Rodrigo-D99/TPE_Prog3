@@ -1,130 +1,72 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Backtracking {
-
-    private List<Procesador> procesadores;
     private List<Tarea> tareas;
-    private Map<Procesador, List<Tarea>> mejorAsignacion;
+    private List<Procesador> procesadores;
+    private List<Procesador> mejorSolucion;
     private int mejorTiempoMaximo;
-    private int cantidadEstadosGenerados;
+    private int estadosGenerados;
 
+    public Backtracking(List<Procesador> procesadores, List<Tarea> tareas){
+        this.estadosGenerados = 0;
+        this.mejorTiempoMaximo = 0;
 
-    /**
-     * Esta clase implementa una estrategia de backtracking para asignar tareas a procesadores,
-     * minimizando el tiempo final de ejecución. La estrategia tiene en cuenta dos restricciones:
-     * 1. Ningún procesador puede ejecutar más de 2 tareas críticas.
-     * 2. Los procesadores no refrigerados no pueden exceder un tiempo máximo de ejecución especificado.
-     */
-    public Backtracking(List<Procesador> procesadores, List<Tarea> tareas) {
-        this.procesadores = new LinkedList<>(procesadores);
-        this.tareas = new LinkedList<>(tareas);
-        this.mejorAsignacion = new HashMap<>();
-        this.mejorTiempoMaximo = Integer.MAX_VALUE;
-        this.cantidadEstadosGenerados = 0;
-        setMejorAsignacion();
+        this.procesadores =new ArrayList<>();
+        this.tareas = new ArrayList<>();
+
+        procesadores.forEach(p -> this.procesadores.add(p.getCopy()));
+        tareas.forEach(t -> this.tareas.add(t.getCopy()));
+
+        this.mejorSolucion = new ArrayList<>();
     }
-    private void setMejorAsignacion(){
-        for (Procesador procesador : procesadores) {
-            mejorAsignacion.put(procesador, new LinkedList<>());
+
+    public void backtracking(int tiempoX) {
+        System.out.println("\nBacktracking:");
+        back(new ArrayList<>(procesadores), 0,0,tiempoX);
+        if(!mejorSolucion.isEmpty() && this.mejorTiempoMaximo!=0){
+            mostrarSolucion(mejorSolucion);
+        }
+        else{
+            System.out.println("No hay solucion posible");
         }
     }
 
-    /**
-     * Inicia el proceso de asignación de tareas utilizando la técnica de backtracking.
-     */
-    public void backtrack(int tiempoX) {
-        if (!this.tareas.isEmpty() && !this.procesadores.isEmpty() && tiempoX>0)
-            backtrack(new HashMap<>(), 0,tiempoX);
-    }
-
-    /**
-     * Realiza el proceso de backtracking para encontrar la mejor asignación de tareas a procesadores.
-     * @param asignacionActual Mapa que representa la asignación actual de tareas a procesadores.
-     * @param tareaIndex Índice de la tarea actual a asignar.
-     */
-    private void backtrack(Map<Procesador, List<Tarea>> asignacionActual, int tareaIndex,int tiempoX) {
-        if (tareaIndex == tareas.size()) {
-            int tiempoMaximo = calcularTiempoMaximo(asignacionActual);
-            if (tiempoMaximo < mejorTiempoMaximo) {
+    private void back(List<Procesador> solucion, int index, int tiempoMaximo, int tiempoX) {
+        if (index == tareas.size()) {
+            if (mejorSolucion.isEmpty() && mejorTiempoMaximo == 0 || tiempoMaximo < mejorTiempoMaximo) {
+                mejorSolucion.clear();
+                for (Procesador p : solucion) {
+                    mejorSolucion.add(p.getCopy());
+                }
                 mejorTiempoMaximo = tiempoMaximo;
-                mejorAsignacion = new HashMap<>();
-                for (Procesador p : asignacionActual.keySet()) {
-                    mejorAsignacion.put(p, new LinkedList<>(asignacionActual.get(p)));
-                }
-                mostrarResultado();
             }
-            cantidadEstadosGenerados++;
-
-        }else {
-            Tarea tarea = tareas.get(tareaIndex);
-            for (Procesador procesador : procesadores) {
-                if (puedeAsignar(procesador, tarea, asignacionActual,tiempoX)) {
-                    asignacionActual.putIfAbsent(procesador, new LinkedList<>());
-                    asignacionActual.get(procesador).add(tarea);
-                    backtrack(asignacionActual, tareaIndex + 1,tiempoX);
-                    asignacionActual.get(procesador).remove(tarea);
+        } else {
+            this.estadosGenerados++;
+            Tarea t = tareas.get(index);
+            for (Procesador p : solucion) {
+                if(isValido(p,t,tiempoX)){
+                    p.addTarea(t);
+                    int nuevoTiempoMaximo = Math.max(p.getTiempoEjecucionMaximo(), tiempoMaximo);
+                    if(mejorTiempoMaximo==0 || nuevoTiempoMaximo < this.mejorTiempoMaximo){
+                        back(solucion, index + 1,nuevoTiempoMaximo,tiempoX);
+                    }
+                    p.removeTarea(t);
                 }
             }
         }
     }
 
-    /**
-     * Verifica si una tarea puede ser asignada a un procesador específico cumpliendo las restricciones.
-     * @param procesador El procesador al que se intenta asignar la tarea.
-     * @param tarea La tarea que se intenta asignar.
-     * @param asignacionActual Mapa que representa la asignación actual de tareas a procesadores.
-     * @return true si la tarea puede ser asignada al procesador, false en caso contrario.
-     */
-    private boolean puedeAsignar(Procesador procesador, Tarea tarea, Map<Procesador, List<Tarea>> asignacionActual,int tiempoMaxNoRefrigerado) {
-        List<Tarea> tareasAsignadas = asignacionActual.getOrDefault(procesador, new LinkedList<>());
-
-        // Verificar el número de tareas críticas
-        long tareasCriticas = tareasAsignadas.stream().filter(Tarea::is_critica).count();
-        if (tarea.is_critica() && tareasCriticas >= 2) {
-            return false;
-        }
-
-        // Verificar el tiempo máximo para procesadores no refrigerados
-        else if ((!procesador.isRefrigerado() || procesador.getTiempoEjecucionMaximo() + tarea.getTiempo_ejec() <= tiempoMaxNoRefrigerado)) {
-            int tiempoTotal = tareasAsignadas.stream().mapToInt(Tarea::getTiempo_ejec).sum();
-            if (tiempoTotal + tarea.getTiempo_ejec() > tiempoMaxNoRefrigerado) {
-                return false;
-            }
-        }
-
-        return true;
+    private boolean isValido(Procesador p, Tarea t, int tiempoX){
+        return p.cantTareasCriticas() < 2 || !t.is_critica() && (p.isRefrigerado() || p.getTiempoEjecucionMaximo() + t.getTiempo_ejec() <= tiempoX);
     }
 
-    /**
-     * Calcula el tiempo máximo de ejecución de una asignación de tareas a procesadores.
-     * @param asignacion Mapa que representa la asignación de tareas a procesadores.
-     * retorna El tiempo máximo de ejecución.
-     */
-    private int calcularTiempoMaximo(Map<Procesador, List<Tarea>> asignacion) {
-        int maximo = 0;
-        for (List<Tarea> tareas : asignacion.values()) {
-            int tiempoTotal = tareas.stream().mapToInt(Tarea::getTiempo_ejec).sum();
-            if (tiempoTotal > maximo) {
-                maximo = tiempoTotal;
-            }
-        }
-        return maximo;
+    private void mostrarSolucion(List<Procesador> lista){
+        System.out.println("Solucion obtenida: ");
+        lista.forEach(p -> {
+            System.out.println("Procesador " + p.getId() + " Tiempo="+ p.getTiempoEjecucionMaximo() +" - Tareas: Cantidad="+ p.getTareas().size() +" Detalle=" + p.getTareas());
+        });
+        System.out.println("Tiempo maximo de Ejecucion: "+ mejorTiempoMaximo);
+        System.out.println("Estados Generados: " + estadosGenerados);
     }
-
-    /**
-     * Muestra el resultado de la mejor asignación encontrada.
-     */
-    public void mostrarResultado() {
-        System.out.println("Backtracking");
-        System.out.println("Solución obtenida: ");
-        for (Procesador procesador : mejorAsignacion.keySet()) {
-            System.out.println(procesador);
-            for (Tarea tarea : mejorAsignacion.get(procesador)) {
-                System.out.println("  " + tarea);
-            }
-        }
-        System.out.println("Solución obtenida: tiempo máximo de ejecución: " + mejorTiempoMaximo);
-        System.out.println("Métrica para analizar el costo de la solución (cantidad de estados generados): " + cantidadEstadosGenerados);
-    }
-
 }

@@ -31,6 +31,8 @@ public class Procesador implements Comparable<Procesador>{
     }
 
     public void removeTarea(Tarea t){
+        if (t.is_critica())
+            tareasCriticas--;
         tareas.remove(t);
     }
 
@@ -69,7 +71,11 @@ public class Procesador implements Comparable<Procesador>{
     }
 
     public Procesador getCopy(){
-        return new Procesador(this.id, this.anio_funcionamiento, this.is_refrigerado, this.codigo);
+        Procesador p = new Procesador(this.id, this.anio_funcionamiento, this.is_refrigerado, this.codigo);
+        this.tareas.forEach(t -> {
+            p.addTarea(t.getCopy());
+        });
+        return p;
     }
 
     @Override

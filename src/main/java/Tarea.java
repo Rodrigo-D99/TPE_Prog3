@@ -62,4 +62,9 @@ public class Tarea implements Comparable<Tarea> {
     public int compareTo(Tarea tarea) {
         return Integer.compare(tarea.getTiempo_ejec(), this.getTiempo_ejec());
     }
+
+    //int id,String nombre,int tiempo_ejec,boolean is_critica, int nivel_prioridad
+    public Tarea getCopy() {
+        return new Tarea(id, nombre, tiempo_ejec, is_critica, nivel_prioridad);
+    }
 }

@@ -60,15 +60,17 @@ public class Servicio {
     }
 
     public void asignarTareas(int tiempoDEMax){
-        System.out.println("Servicio:\nLlamar Greedy:");
+        tiempoDEMax = Math.abs(tiempoDEMax);
+        System.out.println("\n\nServicio: llamar Greedy\n");
         solGreedy.greedy(tiempoDEMax);
-        if (solGreedy.existeSol()){
-            System.out.println("Servicio:\nExiste una solucion\nLlamar Backtracking: TRUE");
-            solBacktracking.backtrack(tiempoDEMax);
-        }
-        else {
-            System.out.println("Servicio:\nNo existe una solucion\nLlamar Backtracking: FALSE");
-        }
+        solBacktracking.backtracking(tiempoDEMax);
+//        if (solGreedy.existeSol()){
+//            System.out.println("\n\nServicio: existe una solucion, llamar Backtracking=TRUE\n");
+//            solBacktracking.backtracking(tiempoDEMax);
+//        }
+//        else {
+//            System.out.println("Servicio:\nNo existe una solucion\nLlamar Backtracking: FALSE");
+//        }
     }
 
     private static void leer(String archivo, List<Procesador> lista) {
