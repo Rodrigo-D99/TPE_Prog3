@@ -42,9 +42,7 @@ public class HashTableManager {
     public Tarea getTarea(String ID){
         String indS = String.valueOf(Integer.parseInt(ID)%m);
         if (tareas.containsKey(indS)){
-            System.out.println("Modulo de ID buscado es una Key valida");
             for (Tarea t:tareas.get(indS)){
-                System.out.println("Iterando LinkedList de la Key");
                 if (String.valueOf(t.getId()).equals(ID))
                     return t;
             }
