@@ -35,7 +35,7 @@ public class Servicio {
              para mantener sincronizadas las asignaciones que va realizando
         * */
         solBacktracking = new SolBacktracking(getProcesadores(),getTareas());
-        solGreedy = new SolGreedy(getProcesadores(), getTareas());
+        solGreedy = new SolGreedy(getProcesadores(), critica, noCritica);
     }
     /*
      * Expresar la complejidad temporal del servicio 1.

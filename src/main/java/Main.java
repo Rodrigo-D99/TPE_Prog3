@@ -7,8 +7,8 @@ public class Main {
 
 
     public static void main(String[] args) {
-        String procesadoresArchivo = "src/main/resources/" + "procesadoresNoRefrigerados.csv";
-        String tareasArchivo = "src/main/resources/" + "tareas.csv";
+        String procesadoresArchivo = "src/main/resources/" + "Procesadore.csv";
+        String tareasArchivo = "src/main/resources/" + "Tarea.csv";
 
         if (Files.exists(Paths.get(procesadoresArchivo)) && Files.exists(Paths.get(tareasArchivo))) {
             Servicio s = new Servicio(procesadoresArchivo, tareasArchivo);
@@ -24,7 +24,7 @@ public class Main {
             if (pruebaServ3 != null)
                 pruebaServ3.forEach(System.out::println);
 
-            s.asignarTareas(30);
+            s.asignarTareas(80);
         }
     }
 }

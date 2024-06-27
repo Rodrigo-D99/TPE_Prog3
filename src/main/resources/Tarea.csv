@@ -1,0 +1,13 @@
+id_tarea;nombre_tarea;tiempo_ejecucion;es_critica?;nivel_prioridad
+T1;Tarea1;5;false;35
+T2;Tarea2;10;false;92
+T3;Tarea3;15;true;22
+T4;Tarea4;20;true;70
+T5;Tarea5;50;false;58
+T6;Tarea6;60;false;11
+T7;Tarea7;70;true;29
+T8;Tarea8;90;false;43
+T9;Tarea9;100;false;37
+T10;Tarea10;120;true;3
+T11;Tarea11;150;true;12
+T12;Tarea12;200;false;53
