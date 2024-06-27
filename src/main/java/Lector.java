@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Lector {
 
-    public static void leerProcesadores(String archivo, List<Procesador> lista) {
+    public  void leerProcesadores(String archivo, List<Procesador> lista) {
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
             br.readLine(); // Leer y descartar la primera línea (encabezado)
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";");
-                int id = Integer.parseInt(datos[0]);
+                String id = datos[0];
                 String codigo = datos[1];
                 boolean refrigerado = Boolean.parseBoolean(datos[2]);
                 int anio = Integer.parseInt(datos[3]);
@@ -24,13 +24,13 @@ public class Lector {
     }
 
 
-    public static void leerTareas(String archivo, Servicio s) {
+    public  void leerTareas(String archivo, Servicio s) {
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
             br.readLine(); // Leer y descartar la primera línea (encabezado)
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";");
-                int id = Integer.parseInt(datos[0]);
+                String id = datos[0];
                 String nombre = datos[1];
                 int tiempo = Integer.parseInt(datos[2]);
                 boolean critica = Boolean.parseBoolean(datos[3]);
@@ -42,4 +42,6 @@ public class Lector {
             e.printStackTrace();
         }
     }
+
+
 }

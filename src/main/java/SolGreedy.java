@@ -41,7 +41,7 @@ public class SolGreedy {
     }
 
     private List<Procesador> greedy(List<Procesador> procesadores, List<Tarea> tareas, int tiempoX){
-        Collections.sort(tareas);//Ordenar tareas por tiempo de ejecucion
+        //Collections.sort(tareas);//Ordenar tareas por tiempo de ejecucion mayor
         while(!tareas.isEmpty()){ // recorrer hasta que no queden tareas por asignar
             Tarea t = tareas.remove(0); //Tomar primera tarea
             Procesador procesadorConMenosCarga = null;
@@ -67,13 +67,13 @@ public class SolGreedy {
     }
 
     private boolean isValido(Procesador p, Tarea t, int tiempoX){
-        return !(p.cantTareasCriticas() == 2 && t.is_critica()) && (p.isRefrigerado() || p.getTiempoEjecucionMaximo() + t.getTiempo_ejec() <= tiempoX);
+        return (p.cantTareasCriticas() < 2 || !t.is_critica())&& (p.isRefrigerado() || p.getTiempoEjecucionMaximo() + t.getTiempo_ejec() <= tiempoX);
     }
 
     private void printSolucion(List<Procesador> lista){
         System.out.println("Solucion obtenida: ");
         lista.forEach(p -> {
-            System.out.println("Procesador " + p.getId() + " Tiempo="+ p.getTiempoEjecucionMaximo() +" - Tareas: Cantidad="+ p.getTareas().size() +" Detalle=" + p.getTareas());
+            System.out.println("Procesador " + p.toString() + " Tiempo="+ p.getTiempoEjecucionMaximo() +" - Tareas: Cantidad="+ p.getTareas().size() +" Detalle=\n" + p.getTareas());
         });
         System.out.println("Tiempo maximo de Ejecucion: "+this.tiempoMaximo);
         System.out.println("Candidatos Considerados: " + candidatosConsiderados);

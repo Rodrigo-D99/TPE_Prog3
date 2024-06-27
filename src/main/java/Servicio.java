@@ -1,12 +1,12 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Servicio {
     private final int MAX_TIEMPO = 100;
-    private HashTableManager tareaXID; //indice para servicio 1
+    //private HashTableManager tareaXID;
+    private HashMap<String,Tarea> tareaXID; //indice para servicio 1 //indice para servicio 1
     private LinkedList<Tarea> tareas;
     private LinkedList<Procesador>procesadores;
     private LinkedList<Tarea> critica, noCritica; //indice para servicio 2
@@ -21,14 +21,17 @@ public class Servicio {
      * Expresar la complejidad temporal del constructor.
      */
     public Servicio(String path, String pathTareas) {
+        Lector lector=new Lector();
         tareas=new LinkedList<>();
         procesadores=new LinkedList<>();
-        tareaXID=new HashTableManager();
+        //tareaXID=new HashTableManager();
+        tareaXID=new HashMap<>();
         arbolBinario=new ArbolBinario();
         critica=new LinkedList<>();
         noCritica=new LinkedList<>();
-        Lector.leerProcesadores(path,this.procesadores);
-        Lector.leerTareas(pathTareas, this);
+        lector.leerProcesadores(path,this.procesadores);
+        lector.leerTareas(pathTareas, this);
+
         /*
             Cada clase tiene una lista de procesadores y tareas independiente.
             En tiempo de ejecucion las clases pueden usar el metodo getCopy de Procesador
@@ -39,10 +42,10 @@ public class Servicio {
     }
     /*
      * Expresar la complejidad temporal del servicio 1.
-     * O(n)
+     * O(1)
      */
     public Tarea servicio1(String ID) {
-        return this.tareaXID.getTarea(ID);
+        return this.tareaXID.get(ID);
     }
     /*
      * Expresar la complejidad temporal del servicio 2.
@@ -69,20 +72,22 @@ public class Servicio {
         tiempoDEMax = Math.abs(tiempoDEMax);
         System.out.println("\n\nServicio: llamar Greedy\n");
         solGreedy.greedy(tiempoDEMax);
-        if (solGreedy.existeSol()){
+
+        solBacktracking.backtracking(tiempoDEMax);
+        /*if (solGreedy.existeSol()){
             System.out.println("\n\nServicio: existe una solucion, llamar Backtracking=TRUE\n");
-            solBacktracking.backtracking(tiempoDEMax);
+
         }
         else {
             System.out.println("Servicio:\nNo existe una solucion\nLlamar Backtracking: FALSE");
-        }
+        }*/
     }
 
     public void addTarea(Tarea t){
         if (t!=null){
             tareas.add(t);
             this.arbolBinario.addNodo(new Nodo(t));
-            this.tareaXID.addTarea(t);
+            this.tareaXID.put(t.getId(),t);
             if (t.is_critica())
                 this.critica.add(t);
             else

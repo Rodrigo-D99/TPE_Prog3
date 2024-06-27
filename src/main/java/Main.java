@@ -18,17 +18,17 @@ public class Main {
             System.out.println("Ingrese el nombre del archivo de procesadores (con extensión .csv):");
             //procesadoresArchivo = "src/main/resources/" + scanner.nextLine();
 
-            procesadoresArchivo = "src/main/resources/" + "procesadores.csv";
+            procesadoresArchivo = "src/main/resources/" + "procesadore.csv";
 
             System.out.println("Ingrese el nombre del archivo de tareas (con extensión .csv):");
             //tareasArchivo = "src/main/resources/" + scanner.nextLine();
-            tareasArchivo = "src/main/resources/" + "tareas.csv";
+            tareasArchivo = "src/main/resources/" + "tarea.csv";
 
             if (Files.exists(Paths.get(procesadoresArchivo)) && Files.exists(Paths.get(tareasArchivo))) {
                 archivosValidos = true;
                 Servicio s=new Servicio(procesadoresArchivo,tareasArchivo);
 
-                Tarea pruebaServ1 = s.servicio1("499");
+                Tarea pruebaServ1 = s.servicio1("T1");
 
                 List<Tarea> pruebaServ2T = s.servicio2(true);
                 List<Tarea> pruebaServ2F = s.servicio2(false);
@@ -37,11 +37,14 @@ public class Main {
                 System.out.println("Desea asignar las tareas a los procesadores? Y/N");
                 //asignarTareas = scanner.nextLine();
                 asignarTareas = "y";
-
+                System.out.println("tarea Por id "+pruebaServ1+"\n");
+                System.out.println("tareas criticas "+pruebaServ2T+"\n");
+                System.out.println("tareas criticas "+pruebaServ2F+"\n");
+                System.out.println("tareas por prioridad "+pruebaServ3+"\n");
                 if(asignarTareas.equalsIgnoreCase("Y")){
                     System.out.println("Ingrese el tiempo de ejecucion max para los procesadores no refrigerados:");
                     //tiempoDEMax = Integer.parseInt(scanner.nextLine());
-                    s.asignarTareas(100);
+                    s.asignarTareas(99);
                 }
 
                 String ss=" ";

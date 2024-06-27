@@ -1,4 +1,4 @@
-id_tarea;nombre_tarea;tiempo_ejecucion;es_critica?;nivel_prioridad
+
 103;Análisis de datos;17;True;93
 107;Actualización de software;25;False;15
 111;Backup del sistema;6;True;72
