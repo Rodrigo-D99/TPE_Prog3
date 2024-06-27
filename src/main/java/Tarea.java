@@ -1,9 +1,11 @@
 public class Tarea implements Comparable<Tarea> {
-    private int id,tiempo_ejec,nivel_prioridad;
+    private int tiempo_ejec,nivel_prioridad;
+
+    private String id;
     private String nombre;
     private boolean is_critica;
 
-    public Tarea(int id,String nombre,int tiempo_ejec,boolean is_critica, int nivel_prioridad ) {
+    public Tarea(String id,String nombre,int tiempo_ejec,boolean is_critica, int nivel_prioridad ) {
         setTiempo_ejec(tiempo_ejec);
         setNivel_prioridad(nivel_prioridad);
         this.nombre = nombre;
@@ -27,7 +29,7 @@ public class Tarea implements Comparable<Tarea> {
         this.tiempo_ejec = tiempo_ejec;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

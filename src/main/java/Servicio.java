@@ -23,7 +23,7 @@ public class Servicio {
     public Servicio(String path, String pathTareas) {
         tareas=new LinkedList<>();
         procesadores=new LinkedList<>();
-        tareaXID=new HashTableManager();
+       // tareaXID=new HashTableManager();
         arbolBinario=new ArbolBinario();
         critica=new LinkedList<>();
         noCritica=new LinkedList<>();
@@ -42,7 +42,8 @@ public class Servicio {
      * O(n)
      */
     public Tarea servicio1(String ID) {
-        return this.tareaXID.getTarea(ID);
+        //return this.tareaXID.getTarea(ID);
+        return null;
     }
     /*
      * Expresar la complejidad temporal del servicio 2.
@@ -82,7 +83,7 @@ public class Servicio {
         if (t!=null){
             tareas.add(t);
             this.arbolBinario.addNodo(new Nodo(t));
-            this.tareaXID.addTarea(t);
+            //this.tareaXID.addTarea(t);
             if (t.is_critica())
                 this.critica.add(t);
             else

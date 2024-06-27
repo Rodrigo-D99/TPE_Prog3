@@ -31,7 +31,7 @@ public class Main {
                 archivosValidos = true;
                 Servicio s=new Servicio(procesadoresArchivo,tareasArchivo);
 
-                System.out.println("Ingrese el numero de ID de la tarea buscada:");
+                /*System.out.println("Ingrese el numero de ID de la tarea buscada:");
                 comando = scanner.nextLine();
                 if (comando.matches("\\d+")) {  // La expresión regular \\d+ significa "uno o más dígitos"
                     System.out.println("Número ingresado: " + comando);
@@ -39,24 +39,29 @@ public class Main {
                     System.out.println("Resultado: " + pruebaServ1);
                 } else {
                     System.out.println("El valor ingresado no es un número. No se ejecutará la función.");
-                }
+                }*/
 
-                System.out.println("Mostrar tareas criticas? Y/N");
+                Tarea pruebaServ1 = s.servicio1("T4");
+
+                /*System.out.println("Mostrar tareas criticas? Y/N");
                 comando = scanner.nextLine();
                 if(comando.equalsIgnoreCase("Y")){
                     List<Tarea> pruebaServ2T = s.servicio2(true);
                     pruebaServ2T.forEach(System.out::println);
-                }
+                }*/
 
-                System.out.println("Mostrar tareas NO criticas? Y/N");
+                List<Tarea> pruebaServ2T = s.servicio2(true);
+                pruebaServ2T.forEach(System.out::println);
+
+                /*System.out.println("Mostrar tareas NO criticas? Y/N");
                 comando = scanner.nextLine();
                 if(comando.equalsIgnoreCase("Y")){
                     List<Tarea> pruebaServ2T = s.servicio2(false);
                     pruebaServ2T.forEach(System.out::println);
                 }
+*/
 
-
-                System.out.println("Ingrese el numero de prioridad inferior:");
+                /*System.out.println("Ingrese el numero de prioridad inferior:");
                 comando = scanner.nextLine();
                 if(comando.matches("\\d+")){
                     int prioridadInferior = Integer.parseInt(comando);
@@ -72,8 +77,11 @@ public class Main {
                     }else
                         System.out.println("Comando no fue un numero, no se buscara por prioridad");
                 }else
-                    System.out.println("Comando no fue un numero, no se buscara por prioridad");
+                    System.out.println("Comando no fue un numero, no se buscara por prioridad");*/
 
+                List<Tarea> pruebaServ3 = s.servicio3(5, 14);
+                if (pruebaServ3 != null)
+                    pruebaServ3.forEach(System.out::println);
 
 
 

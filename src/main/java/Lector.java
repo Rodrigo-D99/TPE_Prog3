@@ -30,7 +30,7 @@ public class Lector {
             br.readLine(); // Leer y descartar la primera línea (encabezado)
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";");
-                int id = Integer.parseInt(datos[0]);
+                String id = datos[0];
                 String nombre = datos[1];
                 int tiempo = Integer.parseInt(datos[2]);
                 boolean critica = Boolean.parseBoolean(datos[3]);

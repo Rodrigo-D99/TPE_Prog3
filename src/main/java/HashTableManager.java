@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class HashTableManager {
-    private int m = 7;
+    /*private int m = 7;
     private int total = 0;
 
     private double factorCarga = 0.7;
@@ -48,5 +48,5 @@ public class HashTableManager {
             }
         }
         return null;
-    }
+    }*/
 }
