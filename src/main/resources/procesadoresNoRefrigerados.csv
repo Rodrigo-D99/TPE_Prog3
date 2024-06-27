@@ -1,11 +1,11 @@
 id_procesador;codigo_procesador;esta_refrigerado?;año_funcionamiento
-P1;PRC-XA12;True;2019
+P1;PRC-XA12;False;2019
 P2;PRC-YB23;False;2020
-P3;PRC-ZC34;True;2021
+P3;PRC-ZC34;False;2021
 P4;PRC-WD45;False;2018
-P5;PRC-VF56;True;2022
+P5;PRC-VF56;False;2022
 P6;PRC-UG67;False;2017
-P7;PRC-TH78;True;2023
+P7;PRC-TH78;False;2023
 P8;PRC-SI89;False;2016
-P9;PRC-RJ90;True;2015
+P9;PRC-RJ90;False;2015
 P10;PRC-QK01;False;2024

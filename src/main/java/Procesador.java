@@ -3,14 +3,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Procesador implements Comparable<Procesador>{
-    private int id,anio_funcionamiento;
+    private int anio_funcionamiento;
+    String id;
     private String codigo;
     private boolean is_refrigerado;
     private LinkedList<Tarea> tareas;
 
     private int tareasCriticas;
 
-    public Procesador(int id, int anio_funcionamiento, boolean is_refrigerado, String codigo) {
+    public Procesador(String id, int anio_funcionamiento, boolean is_refrigerado, String codigo) {
         this.id = id;
         this.anio_funcionamiento = anio_funcionamiento;
         this.is_refrigerado = is_refrigerado;
@@ -42,7 +43,7 @@ public class Procesador implements Comparable<Procesador>{
     public List<Tarea> getTareas() {
         return new LinkedList<>(tareas);
     }
-    public int getId() {
+    public String getId() {
         return id;
     }
 

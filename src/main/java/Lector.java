@@ -11,7 +11,7 @@ public class Lector {
             br.readLine(); // Leer y descartar la primera línea (encabezado)
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(";");
-                int id = Integer.parseInt(datos[0]);
+                String id =datos[0];
                 String codigo = datos[1];
                 boolean refrigerado = Boolean.parseBoolean(datos[2]);
                 int anio = Integer.parseInt(datos[3]);

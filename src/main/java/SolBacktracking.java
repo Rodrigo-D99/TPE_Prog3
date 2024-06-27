@@ -46,7 +46,7 @@ public class SolBacktracking {
         } else {
             Tarea t = tareas.get(index);
             for (Procesador p : solucion) {
-                if (isValido(p, t, tiempoX) && !tieneTareasPeroOtrosNo(solucion, p)) {
+                if (isValido(p, t, tiempoX)) {
                     this.asignacionesRealizadas++;
                     p.addTarea(t);
                     int nuevoTiempoMaximo = Math.max(p.getTiempoEjecucionMaximo(), tiempoMaximo);
@@ -72,7 +72,7 @@ public class SolBacktracking {
 
 
     private boolean isValido(Procesador p, Tarea t, int tiempoX){
-        return p.cantTareasCriticas() < 2 || !t.is_critica() && (p.isRefrigerado() || p.getTiempoEjecucionMaximo() + t.getTiempo_ejec() <= tiempoX);
+        return (p.cantTareasCriticas() < 2 || !t.is_critica()) && (p.isRefrigerado() || p.getTiempoEjecucionMaximo() + t.getTiempo_ejec() <= tiempoX);
     }
 
     /*

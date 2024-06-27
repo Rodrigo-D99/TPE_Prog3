@@ -1,11 +1,24 @@
 id_tarea;nombre_tarea;tiempo_ejecucion;es_critica?;nivel_prioridad
-T1;Tarea1;50;true;92
-T2;Tarea2;10;false;31
-T3;Tarea3;100;false;70
-T4;Tarea4;20;true;58
-T5;Tarea5;70;true;87
-T6;Tarea6;30;false;45
-T7;Tarea7;60;false;76
-T8;Tarea8;80;true;80
-T9;Tarea9;40;true;62
-T10;Tarea10;90;true;35
+T103;Análisis de datos;17;True;93
+T107;Actualización de software;25;False;15
+T111;Backup del sistema;6;True;72
+T115;Mantenimiento de hardware;14;False;61
+T119;Monitoreo de red;9;True;21
+T123;Optimización de base de datos;32;False;83
+T127;Configuración de servidores;40;True;87
+T131;Implementación de seguridad;20;True;75
+T135;Pruebas de rendimiento;19;False;75
+T139;Documentación del sistema;8;False;88
+T143;Análisis de datos;7;True;70
+T147;Actualización de software;11;False;22
+T151;Backup del sistema;9;True;92
+T155;Mantenimiento de hardware;26;False;52
+T159;Monitoreo de red;14;True;87
+T163;Optimización de base de datos;23;False;30
+T167;Configuración de servidores;30;True;42
+T171;Implementación de seguridad;14;True;39
+T175;Pruebas de rendimiento;4;False;7
+T179;Documentación del sistema;23;False;30
+T183;Análisis de datos;12;True;28
+T187;Actualización de software;7;False;89
+T191;Backup del sistema;16;True;64
