@@ -39,7 +39,7 @@ public class Servicio {
     }
     /*
      * Expresar la complejidad temporal del servicio 1.
-     * O(n)
+     * O(1)
      */
     public Tarea servicio1(String ID) {
         return this.tareaXID.get(ID);
