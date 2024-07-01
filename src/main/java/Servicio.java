@@ -67,7 +67,6 @@ public class Servicio {
 
     public void asignarTareas(int tiempoDEMax){
         tiempoDEMax = Math.abs(tiempoDEMax);
-        System.out.println("\n\nServicio: llamar Greedy\n");
         solGreedy.greedy(tiempoDEMax);
         solBacktracking.backtracking(tiempoDEMax);
     }

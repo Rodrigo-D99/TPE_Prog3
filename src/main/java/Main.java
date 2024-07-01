@@ -20,6 +20,7 @@ public class Main {
 
 
             Tarea pruebaServ1 = s.servicio1(id);
+            System.out.println("\nTarea: id = " + id);
             System.out.println("Resultado: " + pruebaServ1 + "\n");
 
             List<Tarea> pruebaServ2T = s.servicio2(criticas);
