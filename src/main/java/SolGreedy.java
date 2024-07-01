@@ -6,7 +6,6 @@ public class SolGreedy {
     private int tiempoMaximo;
     private int candidatosConsiderados;
     private int cantTareasAsignadas;
-    private boolean existeSol;
 
     public SolGreedy(List<Procesador> procesadores, List<Tarea> tareasCritica, LinkedList<Tarea> tareasNoCriticas){
         this.tiempoMaximo = 0;
@@ -18,15 +17,16 @@ public class SolGreedy {
         procesadores.forEach(p -> this.procesadores.add(p.getCopy()));
         tareasCritica.forEach(t -> this.tareasCritica.add(t.getCopy()));
         tareasNoCriticas.forEach(t -> this.tareasNoCriticas.add(t.getCopy()));
-        this.existeSol = false;
     }
 
 
     /*
-    * La idea es ordenar las tareasCritica por tiempo de ejecucion descendente
+    * La idea es ordenar las tareas por tiempo de ejecucion descendente
     * y mantener ordenados los procesadores por tiempo de ejecucion ascendente.
     * Tomando y quitando de la lista a la primer tarea, se busca al procesador valido menos cargado
     * para asignarle la tarea.
+    * Se asignan primero las tareas criticas, se busca dispersarlas para evitar la restriccion
+    * de max tareas criticas por procesador
     * */
     public void greedy(int tiempoX){
         List<Procesador> solucion;
@@ -35,7 +35,6 @@ public class SolGreedy {
         System.out.println("\nGreedy:");
         if(this.tiempoMaximo != 0 && this.cantTareasAsignadas==(tareasCritica.size()+tareasNoCriticas.size())){
             printSolucion(solucion);
-            this.existeSol = true;
         }else{
             System.out.println("Estados Generados: " + candidatosConsiderados);
             System.out.println("Tareas asignadas: " + cantTareasAsignadas);
@@ -43,10 +42,10 @@ public class SolGreedy {
         }
     }
 
-    private List<Procesador> greedy(List<Procesador> procesadores, List<Tarea> tareasCritica, int tiempoX){
-        Collections.sort(tareasCritica);//Ordenar tareasCritica por tiempo de ejecucion
-        while(!tareasCritica.isEmpty()){ // recorrer hasta que no queden tareasCritica por asignar
-            Tarea t = tareasCritica.remove(0); //Tomar primera tarea
+    private List<Procesador> greedy(List<Procesador> procesadores, List<Tarea> tareas, int tiempoX){
+        Collections.sort(tareas);//Ordenar tareas por tiempo de ejecucion
+        while(!tareas.isEmpty()){ // recorrer hasta que no queden tareas por asignar
+            Tarea t = tareas.remove(0); //Tomar primera tarea
             Procesador procesadorConMenosCarga = null;
 
             for(Procesador p:procesadores){
@@ -80,9 +79,5 @@ public class SolGreedy {
         });
         System.out.println("Tiempo maximo de Ejecucion: "+this.tiempoMaximo);
         System.out.println("Candidatos Considerados (Procesadores): " + candidatosConsiderados);
-    }
-
-    public boolean existeSol() {
-        return existeSol;
     }
 }

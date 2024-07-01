@@ -70,26 +70,8 @@ public class SolBacktracking {
         this.solucionesEvaluadas++;
     }
 
-
     private boolean isValido(Procesador p, Tarea t, int tiempoX){
         return (p.cantTareasCriticas() < 2 || !t.is_critica()) && (p.isRefrigerado() || p.getTiempoEjecucionMaximo() + t.getTiempo_ejec() <= tiempoX);
-    }
-
-    /*
-        La idea de este metodo es garantizar que todas las soluciones contemplen que
-        todos los procesadores tengan por lo menos 1 tarea,
-        esto hace que las asignaciones de tareas bajen de +10K a +2K
-        y que las soluciones completas bajen de 56 a 40.
-    */
-    private boolean tieneTareasPeroOtrosNo(List<Procesador> procesadores, Procesador p) {
-        if (!p.getTareas().isEmpty()) {
-            for (Procesador otroProcesador : procesadores) {
-                if (otroProcesador != p && otroProcesador.getTareas().isEmpty()) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     private void mostrarSolucion(List<Procesador> lista){
