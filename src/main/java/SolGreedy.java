@@ -79,7 +79,7 @@ public class SolGreedy {
             System.out.println("Procesador " + p.getId() + " Tiempo="+ p.getTiempoEjecucionMaximo() +" - Tareas: Cantidad="+ p.getTareas().size() +" Detalle=" + p.getTareas());
         });
         System.out.println("Tiempo maximo de Ejecucion: "+this.tiempoMaximo);
-        System.out.println("Candidatos Considerados: " + candidatosConsiderados);
+        System.out.println("Candidatos Considerados (Procesadores): " + candidatosConsiderados);
     }
 
     public boolean existeSol() {
